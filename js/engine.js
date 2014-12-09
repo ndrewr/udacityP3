@@ -83,9 +83,12 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
+
+            console.log("Player is at: %s and %s", player.x, player.y);
+
         // checkCollisions();
         allEnemies.forEach(function(enemy) {
-           if (enemy.x === player.x && enemy.y === player.y) //ruh-roh
+           if (enemy.y === player.y) //ruh-roh
                // Call Game Over state
                gameOver();
         });

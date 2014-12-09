@@ -13,5 +13,5 @@ div {
     border-radius: 1em;
     text-align: center;
     font-size: 3em;
-    vertical-align: middle;
+    padding: 10px;
 }

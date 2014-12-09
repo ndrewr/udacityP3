@@ -39,7 +39,6 @@ var Player = function() {
 
 Player.prototype.update = function() {
     // Update player position based on last input
-
 }
 
 Player.prototype.render = function() {
