@@ -6,7 +6,11 @@
  */
 (function() {
     var resourceCache = {};
+<<<<<<< HEAD
     var loading = [];
+=======
+   // var loading = [];
+>>>>>>> a7ccc13d7b099ef4bb72eb8e1cc41b773a1a7819
     var readyCallbacks = [];
 
     /* This is the publicly accessible image loading function. It accepts
