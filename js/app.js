@@ -67,6 +67,7 @@ Player.prototype.handleInput = function(key) {
         default:
             //Nothing to see here
     }
+    console.log("player position is now %s and %s", player.x, player.y);
 }
 
 // Now instantiate your objects.
