@@ -31,9 +31,24 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-boy.png';
-    // Is this where I set x and y position?
-    this.x = 303; //this.x = 200;
-    this.y = 570//this.y = 404;
+    // Set player initial
+//    this.x = 303; //this.x = 200;
+//    this.y = 570;//this.y = 404;
+    this.reset();
+}
+
+// Simply returns player to specified starting pt, default otherwise
+Player.prototype.reset = function(newX, newY) {
+    if (newX && newY) {
+        if (!isNaN(newX) || !isNaN(newY)) {
+            this.x = newX;
+            this.y = newY;
+        }
+    }
+    else {
+        this.x = 303;
+        this.y = 570;
+    }
 }
 
 Player.prototype.update = function() {

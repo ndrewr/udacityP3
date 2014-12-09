@@ -25,6 +25,9 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
+    // ID var to start and stop animation loop
+    var gameRunning = true;
+
 //    canvas.width = 505;
 //    canvas.height = 606;
 
@@ -32,12 +35,23 @@ var Engine = (function(global) {
     canvas.height = 808;
     doc.body.appendChild(canvas);
 
+    // Dialog box
+    doc.body.appendChild(doc.createElement('h3'));
+
+    // Prompt box
+    var promptBox = doc.createElement('div');
+    promptBox.id = 'prompt';
+    promptBox.innerHTML = '<h2>It is over.</h2><p>...but you can try again!</p><button id="restart">Lets go!</button>';
+    doc.body.appendChild(promptBox);
+
+
+    doc.getElementById('restart').onclick = init;
+
     // place a div element with game messages
     var startBtn = doc.createElement('button');
     startBtn.nodeName = "start";
     startBtn.innerHTML = "again!";
 
-    doc.body.appendChild(doc.createElement('div'));
     doc.body.appendChild(startBtn);
 //    doc.body.getElementsByTagName('div')[0].appendChild(startBtn);
 
@@ -68,15 +82,15 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
-    };
+        if(gameRunning) win.requestAnimationFrame(main);
+    }
 
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
     function init() {
-//        reset();
+        reset();
         lastTime = Date.now();
         main();
     }
@@ -93,23 +107,25 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         // checkCollisions();
-        // Note: player y and enemy y is off by 9 px...
-        var target = allEnemies[2];
-//        console.log("im up on target's space! position is %s and %s", target.x, target.y);
-
-//        if (target.y === player.y - 9)
-//            console.log("im up on target's space! position is %s and %s", Math.floor(target.x), target.y);
+        // Note: player y and enemy y is off by 9 px...for x val, we add 81 because position starts at left top of bug and we want to account for blank space in the sprites
 
         allEnemies.forEach(function(enemy) {
-           if ((enemy.x >= player.x && enemy.x <= player.x+101) && enemy.y === player.y - 9) //ruh-roh
+           if ((enemy.x + 81 >= player.x && enemy.x <= player.x+101) && enemy.y === player.y - 9) {
+
                // Call Game Over state
                console.log("The End.");
                gameOver();
+           }
         });
     }
 
     function gameOver() {
-        doc.getElementsByTagName('DIV')[0].innerHTML = "Goodbye my old friend, your busy day is at an end.";
+        console.log('gameOver called');
+        doc.getElementsByTagName('h3')[0].innerHTML = "Goodbye my old friend, your busy day is at an end.";
+        // Display prompt offering restart
+        gameRunning = false;
+        doc.getElementById('prompt').style.display = 'inherit';
+
     }
 
     /* This is called by the update function  and loops through all of the
@@ -192,9 +208,15 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
-        doc.getElementsByTagName('DIV')[0].innerHTML = "You can do it.";
+        console.log('reset called');
 
-        init();
+        gameRunning = true;
+        player.reset();
+
+        doc.getElementsByTagName('h3')[0].innerHTML = "You can do it.";
+//        doc.getElementById('prompt').setAttribute('style', 'display: none;');
+        doc.getElementById('prompt').style.display = 'none';
+        //init();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
