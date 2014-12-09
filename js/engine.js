@@ -25,12 +25,9 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-<<<<<<< HEAD
-    canvas.width = 505;
-    canvas.height = 606;
-    doc.body.appendChild(canvas);
+//    canvas.width = 505;
+//    canvas.height = 606;
 
-=======
     canvas.width = 707;
     canvas.height = 808;
     doc.body.appendChild(canvas);
@@ -38,7 +35,6 @@ var Engine = (function(global) {
     // place a div element with game messages
     doc.body.appendChild(doc.createElement('div'));
 
->>>>>>> a7ccc13d7b099ef4bb72eb8e1cc41b773a1a7819
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -91,8 +87,6 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         // checkCollisions();
-<<<<<<< HEAD
-=======
         allEnemies.forEach(function(enemy) {
            if (enemy.x === player.x && enemy.y === player.y) //ruh-roh
                // Call Game Over state
@@ -102,7 +96,6 @@ var Engine = (function(global) {
 
     function gameOver() {
         doc.getElementsByTagName('DIV')[0].innerHTML = "Goodbye my old friend, your busy day is at an end.";
->>>>>>> a7ccc13d7b099ef4bb72eb8e1cc41b773a1a7819
     }
 
     /* This is called by the update function  and loops through all of the
@@ -134,13 +127,6 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 1 of 3 of stone
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
-<<<<<<< HEAD
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
-            ],
-            numRows = 6,
-            numCols = 5,
-=======
                 'images/stone-block.png',   // Row 3 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
                 'images/grass-block.png',   // Row 1 of 2 of grass
@@ -148,7 +134,6 @@ var Engine = (function(global) {
             ],
             numRows = 8,
             numCols = 7,
->>>>>>> a7ccc13d7b099ef4bb72eb8e1cc41b773a1a7819
             row, col;
 
         /* Loop through the number of rows and columns we've defined above
@@ -193,10 +178,7 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
-<<<<<<< HEAD
-=======
         doc.getElementsByTagName('DIV')[0].innerHTML = "You can do it.";
->>>>>>> a7ccc13d7b099ef4bb72eb8e1cc41b773a1a7819
     }
 
     /* Go ahead and load all of the images we know we're going to need to
