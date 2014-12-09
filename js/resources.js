@@ -6,6 +6,7 @@
  */
 (function() {
     var resourceCache = {};
+    var loading = [];
    // var loading = [];
     var readyCallbacks = [];
 

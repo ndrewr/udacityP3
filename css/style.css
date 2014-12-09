@@ -2,16 +2,23 @@ body {
     text-align: center;
 }
 
+header {
+    color: blue;
+
+}
+
 canvas {
 /*    background: green;*/
 }
 
 div {
+    position: relative;
     width: 100%;
     height: 202px;
-    border: 1em solid gray;
+    border: .5em solid gray;
+    box-sizing: border-box;
     border-radius: 1em;
     text-align: center;
-    font-size: 3em;
     padding: 10px;
+    font-size: 1.5em;
 }

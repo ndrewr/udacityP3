@@ -19,7 +19,6 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     this.x= (this.x > 600)? 0 : this.x+=(101*dt);
     //this.x= (this.x > 400)? 0 : this.x+=(101*dt);
-
 }
 
 // Draw the enemy on the screen, required method for game
@@ -67,13 +66,12 @@ Player.prototype.handleInput = function(key) {
         default:
             //Nothing to see here
     }
+    console.log("player position is now %s and %s", player.x, player.y);
 }
-
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
 window.player = new Player();
 
 window.allEnemies = [];
@@ -83,7 +81,6 @@ for(var i=0; i < 3; i++) {
     window.allEnemies.push(new Enemy(startx, starty));
     starty+=83;
 }
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

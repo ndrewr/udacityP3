@@ -25,12 +25,21 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
+//    canvas.width = 505;
+//    canvas.height = 606;
+
     canvas.width = 707;
     canvas.height = 808;
     doc.body.appendChild(canvas);
 
     // place a div element with game messages
+    var startBtn = doc.createElement('button');
+    startBtn.nodeName = "start";
+    startBtn.innerHTML = "again!";
+
     doc.body.appendChild(doc.createElement('div'));
+    doc.body.appendChild(startBtn);
+//    doc.body.getElementsByTagName('div')[0].appendChild(startBtn);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -67,7 +76,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
+//        reset();
         lastTime = Date.now();
         main();
     }
@@ -83,13 +92,18 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-
-            console.log("Player is at: %s and %s", player.x, player.y);
-
         // checkCollisions();
+        // Note: player y and enemy y is off by 9 px...
+        var target = allEnemies[2];
+//        console.log("im up on target's space! position is %s and %s", target.x, target.y);
+
+//        if (target.y === player.y - 9)
+//            console.log("im up on target's space! position is %s and %s", Math.floor(target.x), target.y);
+
         allEnemies.forEach(function(enemy) {
-           if (enemy.y === player.y) //ruh-roh
+           if ((enemy.x >= player.x && enemy.x <= player.x+101) && enemy.y === player.y - 9) //ruh-roh
                // Call Game Over state
+               console.log("The End.");
                gameOver();
         });
     }
@@ -179,6 +193,8 @@ var Engine = (function(global) {
     function reset() {
         // noop
         doc.getElementsByTagName('DIV')[0].innerHTML = "You can do it.";
+
+        init();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
