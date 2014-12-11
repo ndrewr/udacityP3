@@ -57,6 +57,8 @@ Player.prototype.reset = function(newX, newY) {
     }
 
     this.counter = 0; // counter for animation frame
+    this.xOff = 0;  // offset into spritesheet
+    this.yOff = 0;
 }
 
 Player.prototype.update = function() {
@@ -67,29 +69,37 @@ Player.prototype.update = function() {
 Player.prototype.render = function() {
 //    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     var count = Math.floor(this.counter / 4);
-    var xoff = count%8 * 32;
-    ctx.drawImage(Resources.get(this.sprite), xoff, 0, 32, 32, this.x, this.y, 32, 32);
+    this.xOff = count%8 * 32;
+    ctx.drawImage(Resources.get(this.sprite), this.xOff, this.yOff, 32, 32, this.x, this.y, 32, 32);
 
 }
 
 Player.prototype.handleInput = function(key) {
-
+    // each movement switches row in player spritesheet
     switch (key) {
         case 'left':
                 //render one step left
-                this.x-=101;
+                this.x = (this.x - 101 < 0)? 32 : this.x - 101;
+//                this.x-=101;
+                this.yOff = 32;
                 break;
         case 'up':
                 //render one step up
-                this.y-=83;
+                this.y = (this.y - 83 < 100)? 155 : this.y - 83;
+//                this.y-=83;
+                this.yOff = 0;
                 break;
         case 'right':
                 //render one step right
-                this.x+=101;
+                this.x = (this.x + 101 > 707)? 638 : this.x + 101;
+//                this.x+=101;
+                this.yOff = 96;
                 break;
         case 'down':
                 //render one step down
-                this.y+=83;
+                this.y = (this.y + 83 > 700)? 653 : this.y + 83;
+//                this.y+=83;
+                this.yOff = 64;
                 break;
         default:
             //Nothing to see here
