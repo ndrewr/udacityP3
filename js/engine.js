@@ -108,12 +108,12 @@ var Engine = (function(global) {
         updateEntities(dt);
         // checkCollisions();
         // Note: player y and enemy y is off by 9 px...for x val, we add 81 because position starts at left top of bug and we want to account for blank space in the sprites
-
-        allEnemies.forEach(function(enemy) {
-           if ((enemy.x + 81 >= player.x && enemy.x <= player.x+101) && enemy.y === player.y - 9) {
+        allEnemies.forEach(function(enemy, index) {
+            var enemyNose = enemy.x + 101;
+            if ((enemyNose >= player.x && enemy.x <= player.x + 32) && (enemy.y === player.y - 25)) {
 
                // Call Game Over state
-               console.log("The End.");
+               console.log("The End. Enemy %s was at %s and %s", index, enemy.x, enemy.y);
                gameOver();
            }
         });
@@ -228,7 +228,10 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        // new grapics
+        'images/unit1.png',
+        'images/automapping-terrain.png'
     ]);
     Resources.onReady(init);
 

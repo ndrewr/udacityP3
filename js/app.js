@@ -17,20 +17,24 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x= (this.x > 600)? 0 : this.x+=(101*dt);
+    this.x = (this.x > 600)? 0 : this.x+=(101*dt);
     //this.x= (this.x > 400)? 0 : this.x+=(101*dt);
 }
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+//    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), 0, 70, 101, 100, this.x, this.y, 101, 100);
+
 }
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-    this.sprite = 'images/char-boy.png';
+    //this.sprite = 'images/char-boy.png';
+    this.sprite = 'images/unit1.png';
+
     // Set player initial
 //    this.x = 303; //this.x = 200;
 //    this.y = 570;//this.y = 404;
@@ -46,17 +50,26 @@ Player.prototype.reset = function(newX, newY) {
         }
     }
     else {
-        this.x = 303;
+//        this.x = 303;
+//        this.y = 570;
+        this.x = 335;
         this.y = 570;
     }
+
+    this.counter = 0; // counter for animation frame
 }
 
 Player.prototype.update = function() {
     // Update player position based on last input
+    this.counter++;
 }
 
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+//    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    var count = Math.floor(this.counter / 4);
+    var xoff = count%8 * 32;
+    ctx.drawImage(Resources.get(this.sprite), xoff, 0, 32, 32, this.x, this.y, 32, 32);
+
 }
 
 Player.prototype.handleInput = function(key) {
@@ -91,7 +104,7 @@ window.player = new Player();
 
 window.allEnemies = [];
 var startx = 0,
-    starty = 146; //starty = 63;
+    starty = 213; //starty = 63;
 for(var i=0; i < 3; i++) {
     window.allEnemies.push(new Enemy(startx, starty));
     starty+=83;
