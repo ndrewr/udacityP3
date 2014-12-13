@@ -118,6 +118,18 @@ var Engine = (function(global) {
            }
         });
     }
+    
+    function checkCollisions() {
+        allEnemies.forEach(function(enemy, index) {
+            var enemyNose = enemy.x + 101;
+            if ((enemyNose >= player.x && enemy.x <= player.x + 32) && (enemy.y === player.y - 25)) {
+
+               // Call Game Over state
+               console.log("The End. Enemy %s was at %s and %s", index, enemy.x, enemy.y);
+               gameOver();
+           }
+        });
+    }
 
     function gameOver() {
         console.log('gameOver called');

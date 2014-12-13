@@ -1,5 +1,5 @@
 // Enemies our player must avoid
-var Enemy = function(x, y) {
+var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -9,6 +9,11 @@ var Enemy = function(x, y) {
     // Each enemy requires different starting placement...will be set here.
     this.x = x;
     this.y = y;
+    // if speed comes in at 0, assign default of 3
+    if (speed)
+        this.speed = speed;
+    else
+        this.speed = 3;
 }
 
 // Update the enemy's position, required method for game
@@ -17,7 +22,8 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x = (this.x > 600)? 0 : this.x+=(101*dt);
+    // 101 is the width of each tile...this.speed is enemy's unique speed modifier
+    this.x = (this.x > 600)? 0 : this.x+=(101* dt * this.speed);
     //this.x= (this.x > 400)? 0 : this.x+=(101*dt);
 }
 
@@ -110,14 +116,28 @@ Player.prototype.handleInput = function(key) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-window.player = new Player();
+//(function(global) {
+    window.player = new Player();
 
-window.allEnemies = [];
-var startx = 0,
-    starty = 213; //starty = 63;
-for(var i=0; i < 3; i++) {
-    window.allEnemies.push(new Enemy(startx, starty));
-    starty+=83;
+    window.allEnemies = [];
+    var startx = 0,
+        starty = 213; //starty = 63;
+    for(var i=0; i < 3; i++) {
+        var xval = startx - randomizer(),
+            speedy = randomizer(5);
+        window.allEnemies.push(new Enemy(xval, starty, speedy));
+
+        console.log("This enemy will be at %s and %s with speed %s", xval, starty, speedy);
+
+        starty+=83;
+    }
+
+//})(this);
+
+function randomizer(num) {
+    if(!num) num = 1000;
+//    console.log("The random range will be %s", num);
+    return Math.floor(Math.random() * num);
 }
 
 // This listens for key presses and sends the keys to your
