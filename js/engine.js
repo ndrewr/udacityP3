@@ -23,20 +23,18 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
-
-    // ID var to start and stop animation loop
-    var gameRunning = true;
-
-//    canvas.width = 505;
-//    canvas.height = 606;
-
-    canvas.width = 707;
-    canvas.height = 808;
-    doc.body.appendChild(canvas);
+        lastTime,
+        gameRunning = true, // ID var to start and stop animation loop
+        currentLevel = 0;   // Tracks current level to display
 
     // Dialog box
     doc.body.appendChild(doc.createElement('h3'));
+
+    //    canvas.width = 505;
+    //    canvas.height = 606;
+    canvas.width = 707;
+    canvas.height = 707;
+    doc.body.appendChild(canvas);
 
     // Prompt box
     var promptBox = doc.createElement('div');
@@ -44,16 +42,14 @@ var Engine = (function(global) {
     promptBox.innerHTML = '<h2>It is over.</h2><p>...but you can try again!</p><button id="restart">Lets go!</button>';
     doc.body.appendChild(promptBox);
 
-
+    // Reset button
     doc.getElementById('restart').onclick = init;
 
     // place a div element with game messages
-    var startBtn = doc.createElement('button');
-    startBtn.nodeName = "start";
-    startBtn.innerHTML = "again!";
-
-    doc.body.appendChild(startBtn);
-//    doc.body.getElementsByTagName('div')[0].appendChild(startBtn);
+//    var startBtn = doc.createElement('button');
+//    startBtn.nodeName = "start";
+//    startBtn.innerHTML = "again!";
+//    doc.body.appendChild(startBtn);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -82,7 +78,15 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        if(gameRunning) win.requestAnimationFrame(main);
+        if(levelComplete) {
+            currentLevel++;
+            console.log("Congrats! Proceeding to level %s", currentLevel);
+            levelComplete = false;
+            init();
+        }
+        else {
+            if(gameRunning) win.requestAnimationFrame(main);
+        }
     }
 
     /* This function does some initial setup that should only occur once,
@@ -132,7 +136,6 @@ var Engine = (function(global) {
     }
 
     function gameOver() {
-        console.log('gameOver called');
         doc.getElementsByTagName('h3')[0].innerHTML = "Goodbye my old friend, your busy day is at an end.";
         // Display prompt offering restart
         gameRunning = false;
@@ -164,18 +167,21 @@ var Engine = (function(global) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
-        var rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
-            ],
-            numRows = 8,
-            numCols = 7,
+
+        var rowImages = levels[currentLevel].levelLayout,
+
+//        var rowImages = [
+//                //'images/water-block.png',   // Top row is water
+//                ['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],
+//                'images/stone-block.png',   // Row 1 of 3 of stone
+//                'images/stone-block.png',   // Row 2 of 3 of stone
+//                'images/stone-block.png',   // Row 3 of 3 of stone
+//                'images/stone-block.png',   // Row 3 of 3 of stone
+//                'images/stone-block.png',   // Row 3 of 3 of stone
+//                'images/grass-block.png',   // Row 1 of 2 of grass
+//            ],
+            numRows = levels[currentLevel].levelSize.rows,
+            numCols = levels[currentLevel].levelSize.cols,
             row, col;
 
         /* Loop through the number of rows and columns we've defined above
@@ -191,7 +197,11 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+
+                var tile = (rowImages[row].constructor === Array)? rowImages[row][col] : rowImages[row];
+
+                ctx.drawImage(Resources.get(tile), col * 101, row * 83);
+//                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
 
@@ -219,14 +229,10 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
-        console.log('reset called');
-
         gameRunning = true;
         player.reset();
 
         doc.getElementsByTagName('h3')[0].innerHTML = "You can do it.";
-//        doc.getElementById('prompt').setAttribute('style', 'display: none;');
         doc.getElementById('prompt').style.display = 'none';
         //init();
     }

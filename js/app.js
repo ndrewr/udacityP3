@@ -81,30 +81,50 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.handleInput = function(key) {
+
+    // Note: assign a gate spot coord...then check every up input if player has reached gate
+    // method: check after adjusting new offset if player has landed on 'special square'...
+    // ex 'gate square', 'start square', 'item', 'boss'...stored in window.levelRules obj?
+    // part of larger level obj that also has rowImages, level counter, winning condition
+
     // each movement switches row in player spritesheet
     switch (key) {
         case 'left':
                 //render one step left
-                this.x = (this.x - 101 < 0)? 32 : this.x - 101;
-//                this.x-=101;
+                if (this.y < 500 && this.y > 100) {
+                    this.x = (this.x - 101 < 0)? 32 : this.x - 101;
+                }
                 this.yOff = 32;
                 break;
         case 'up':
                 //render one step up
-                this.y = (this.y - 83 < 100)? 155 : this.y - 83;
-//                this.y-=83;
+                // Each lvl has a end pt, the only pt a player can traverse to in that row
+                if (this.x === 335 && this.y < 200) {
+                    this.y = (this.y === 155)? this.y - 83 : 72;
+                    // At this point you can initate a win condition, next lvl etc.
+                    levelComplete = true;
+                }
+                else {
+                    this.y = (this.y - 83 < 100)? 155 : this.y - 83;
+                }
                 this.yOff = 0;
                 break;
         case 'right':
                 //render one step right
-                this.x = (this.x + 101 > 707)? 638 : this.x + 101;
-//                this.x+=101;
+                if (this.y < 500 && this.y > 100) {
+                    this.x = (this.x + 101 > 707)? 638 : this.x + 101;
+                }
                 this.yOff = 96;
                 break;
         case 'down':
                 //render one step down
-                this.y = (this.y + 83 > 700)? 653 : this.y + 83;
-//                this.y+=83;
+                // Each lvl has a starting pt, the only pt a player can return to in that row
+                if (this.x === 335 && this.y > 404) {
+                    this.y = (this.y === 487)? this.y + 83 : 570;
+                }
+                else {
+                    this.y = (this.y + 83 > 500)? 487 : this.y + 83;
+                }
                 this.yOff = 64;
                 break;
         default:
@@ -122,9 +142,9 @@ Player.prototype.handleInput = function(key) {
     window.allEnemies = [];
     var startx = 0,
         starty = 213; //starty = 63;
-    for(var i=0; i < 3; i++) {
+    for(var i=0; i < 4; i++) {
         var xval = startx - randomizer(),
-            speedy = randomizer(5);
+            speedy = randomizer(3,5);
         window.allEnemies.push(new Enemy(xval, starty, speedy));
 
         console.log("This enemy will be at %s and %s with speed %s", xval, starty, speedy);
@@ -134,10 +154,49 @@ Player.prototype.handleInput = function(key) {
 
 //})(this);
 
-function randomizer(num) {
-    if(!num) num = 1000;
-//    console.log("The random range will be %s", num);
-    return Math.floor(Math.random() * num);
+// Level object
+var Level = function(num, size, levelTiles, start, exit) {
+    this.levelNum = num;
+    this.levelSize = size;
+    this.levelLayout = levelTiles;
+    this.startPt = start;
+    this.exitPt = exit;
+}
+
+// Test level builder, may move to seperate file
+window.levels = [];
+//window.currentLevel = 0;
+window.levelComplete = false;
+levels.push(new Level(0,
+                      {rows:7, cols:7},
+                     ['images/stone-block.png',
+                     'images/stone-block.png',
+                     'images/stone-block.png',
+                     'images/stone-block.png',
+                     'images/stone-block.png',
+                     'images/stone-block.png',
+                     'images/stone-block.png'],
+                      {x:335, y:570},
+                      {x:335, y:72}
+                     ));
+levels.push(new Level(1,
+                      {rows:7, cols:7},
+                     [
+                        ['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],
+                        'images/stone-block.png',
+                        'images/stone-block.png',
+                        'images/stone-block.png',
+                        'images/stone-block.png',
+                        'images/stone-block.png',
+                        'images/grass-block.png'],
+                      {x:234, y:570},
+                      {x:335, y:72}
+                     ));
+
+// Overloaded to allow two range args or default to 1000 to calc enemy stagger
+function randomizer(min, max) {
+    if(!min) return Math.floor(Math.random() * 1000);;
+    return Math.floor(Math.random() * (max - min + 1)) + min; // from MDN docs
 }
 
 // This listens for key presses and sends the keys to your
