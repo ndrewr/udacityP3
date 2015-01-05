@@ -27,23 +27,25 @@ var Engine = (function(global) {
         gameRunning = true, // ID var to start and stop animation loop
         currentLevel = 0;   // Tracks current level to display
 
-    // Dialog box
-    doc.body.appendChild(doc.createElement('h3'));
-
     //    canvas.width = 505;
     //    canvas.height = 606;
     canvas.width = 707;
-    canvas.height = 707;
-    doc.body.appendChild(canvas);
+    canvas.height = 606;
+//    doc.body.appendChild(canvas);
+    doc.getElementById('mainscreen').appendChild(canvas);
 
     // Prompt box
     var promptBox = doc.createElement('div');
     promptBox.id = 'prompt';
     promptBox.innerHTML = '<h2>It is over.</h2><p>...but you can try again!</p><button id="restart">Lets go!</button>';
-    doc.body.appendChild(promptBox);
+//    doc.body.appendChild(promptBox);
+    doc.getElementById('mainscreen').appendChild(promptBox);
 
     // Reset button
     doc.getElementById('restart').onclick = init;
+
+    // Dialog box
+    doc.getElementById('mainscreen').appendChild(doc.createElement('h3'));
 
     // place a div element with game messages
 //    var startBtn = doc.createElement('button');
@@ -110,19 +112,21 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
         // Note: player y and enemy y is off by 9 px...for x val, we add 81 because position starts at left top of bug and we want to account for blank space in the sprites
-        allEnemies.forEach(function(enemy, index) {
-            var enemyNose = enemy.x + 101;
-            if ((enemyNose >= player.x && enemy.x <= player.x + 32) && (enemy.y === player.y - 25)) {
-
-               // Call Game Over state
-               console.log("The End. Enemy %s was at %s and %s", index, enemy.x, enemy.y);
-               gameOver();
-           }
-        });
+//        allEnemies.forEach(function(enemy, index) {
+//            var enemyNose = enemy.x + 101;
+//            if ((enemyNose >= player.x && enemy.x <= player.x + 32) && (enemy.y === player.y - 25)) {
+//
+//               // Call Game Over state
+//               console.log("The End. Enemy %s was at %s and %s", index, enemy.x, enemy.y);
+//               gameOver();
+//           }
+//        });
     }
     
+    // cut the number of collision checks
+    // by directly checking corresponding enemy in array index same sto the players current pos
     function checkCollisions() {
         allEnemies.forEach(function(enemy, index) {
             var enemyNose = enemy.x + 101;
@@ -197,14 +201,12 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-
                 var tile = (rowImages[row].constructor === Array)? rowImages[row][col] : rowImages[row];
 
                 ctx.drawImage(Resources.get(tile), col * 101, row * 83);
 //                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
 
         renderEntities();
     }

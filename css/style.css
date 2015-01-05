@@ -3,27 +3,39 @@ body {
     display: flex;
     flex-flow: column;
     align-items: center;
+    background: #000;
+    font-family: 'Nova Oval', cursive;
 }
 
 header {
-    color: blue;
-
+    color: rgba(13, 211, 13, 0.85);
+    font-size: 3em;
 }
 
 canvas {
-/*    background: green;*/
+    background: gray;
+    border: 1px solid black;
+    border-radius: 1em;
 }
 
 h3 {
-    position: relative;
+    position: absolute;
     width: 80%;
-    height: 83px;
-    border: .5em solid gray;
+    height: 70px;
+    border: .3em solid orange;
     box-sizing: border-box;
     border-radius: 1em;
     text-align: center;
     padding: 10px;
     font-size: 1.5em;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.6);
+}
+
+#mainscreen {
+    position: relative;
 }
 
 #prompt {

@@ -34,16 +34,11 @@ Enemy.prototype.render = function() {
 
 }
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// Player class
 var Player = function() {
     //this.sprite = 'images/char-boy.png';
     this.sprite = 'images/unit1.png';
-
-    // Set player initial
-//    this.x = 303; //this.x = 200;
-//    this.y = 570;//this.y = 404;
+    // this call sets starting pos of player
     this.reset();
 }
 
@@ -56,10 +51,8 @@ Player.prototype.reset = function(newX, newY) {
         }
     }
     else {
-//        this.x = 303;
-//        this.y = 570;
-        this.x = 335;
-        this.y = 570;
+        this.x = levels[currentLevel].startPt.x;
+        this.y = levels[currentLevel].startPt.y;
     }
 
     this.counter = 0; // counter for animation frame
@@ -88,71 +81,76 @@ Player.prototype.handleInput = function(key) {
     // part of larger level obj that also has rowImages, level counter, winning condition
 
     // each movement switches row in player spritesheet
-    switch (key) {
-        case 'left':
-                //render one step left
-                if (this.y < 500 && this.y > 100) {
-                    this.x = (this.x - 101 < 0)? 32 : this.x - 101;
-                }
-                this.yOff = 32;
-                break;
-        case 'up':
-                //render one step up
-                // Each lvl has a end pt, the only pt a player can traverse to in that row
-                if (this.x === 335 && this.y < 200) {
-                    this.y = (this.y === 155)? this.y - 83 : 72;
-                    // At this point you can initate a win condition, next lvl etc.
-                    levelComplete = true;
-                }
-                else {
-                    this.y = (this.y - 83 < 100)? 155 : this.y - 83;
-                }
-                this.yOff = 0;
-                break;
-        case 'right':
-                //render one step right
-                if (this.y < 500 && this.y > 100) {
-                    this.x = (this.x + 101 > 707)? 638 : this.x + 101;
-                }
-                this.yOff = 96;
-                break;
-        case 'down':
-                //render one step down
-                // Each lvl has a starting pt, the only pt a player can return to in that row
-                if (this.x === 335 && this.y > 404) {
-                    this.y = (this.y === 487)? this.y + 83 : 570;
-                }
-                else {
-                    this.y = (this.y + 83 > 500)? 487 : this.y + 83;
-                }
-                this.yOff = 64;
-                break;
-        default:
-            //Nothing to see here
+    // values 32, 69 rep offset to center character avatar within tile given sprite size
+    // using levels object to dynamically check current level size...ex to get center of field:
+    // Math.floor(levels[currentLevel].levelSize.rows / 2) + 32
+    if (playerInBounds(key)) {
+
+        switch (key) {
+            case 'left':
+                    //render one step left
+                    /*if (this.y < 500 && this.y > 100) {
+                        this.x = (this.x - 101 < 0)? 32 : this.x - 101;
+                    }*/
+                    if (playerInBounds(key)) {
+                        this.x -= 101;
+                    }
+                    this.yOff = 32;
+                    break;
+            case 'up':
+                    //render one step up
+                    // Each lvl has a end pt, the only pt a player can traverse to in that row
+
+                   /* if (this.x === 335 && this.y < 200) {
+                        this.y = (this.y === 155)? this.y - 83 : 72;
+                        // At this point you can initate a win condition, next lvl etc.
+                        levelComplete = true;
+                    }
+                    else {
+                        this.y = (this.y - 83 < 100)? 155 : this.y - 83;
+                    }
+                   */
+
+                    if (playerInBounds(key)) {
+                        this.y -= 83;
+                    }
+                    this.yOff = 0;
+
+                    if(goalReached()) levelComplete = true;
+
+                    break;
+            case 'right':
+                    //render one step right
+                   /* if (this.y < 500 && this.y > 100) {
+                        this.x = (this.x + 101 > levelSize.cols * 101)? levelSize.cols*101 - 69 : this.x + 101;
+                    }*/
+
+                    if(playerInBounds(key)) {
+                        this.x += 101;
+                    }
+                    this.yOff = 96;
+                    break;
+            case 'down':
+                    //render one step down
+                    // Each lvl has a starting pt, the only pt a player can return to in that row
+                    /*if (this.x === 335 && this.y > 404) {
+                        this.y = (this.y === 487)? this.y + 83 : 570;
+                    }
+                    else {
+                        this.y = (this.y + 83 > 500)? 487 : this.y + 83;
+                    }*/
+
+                    if(playerInBounds(key)) {
+                        this.y += 83;
+                    }
+                    this.yOff = 64;
+                    break;
+            default:
+                //Nothing to see here
+        }
     }
     console.log("player position is now %s and %s", player.x, player.y);
 }
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-//(function(global) {
-    window.player = new Player();
-
-    window.allEnemies = [];
-    var startx = 0,
-        starty = 213; //starty = 63;
-    for(var i=0; i < 4; i++) {
-        var xval = startx - randomizer(),
-            speedy = randomizer(3,5);
-        window.allEnemies.push(new Enemy(xval, starty, speedy));
-
-        console.log("This enemy will be at %s and %s with speed %s", xval, starty, speedy);
-
-        starty+=83;
-    }
-
-//})(this);
 
 // Level object
 var Level = function(num, size, levelTiles, start, exit) {
@@ -163,20 +161,52 @@ var Level = function(num, size, levelTiles, start, exit) {
     this.exitPt = exit;
 }
 
+Level.prototype.goalReached = function(playerX, playerY) {
+    return playerX === this.exitPt.x && playerY === this.exitPt.y;
+}
+
+
+// Now instantiate your objects.
+// Place all enemy objects in an array called allEnemies
+// Place the player object in a variable called player
+
+    window.allEnemies = [];
+    var startx = 0,
+        starty = 130; //starty = 63;
+    for(var i=0; i < 4; i++) {
+        var xval = startx - randomizer(),
+            speedy = randomizer(3,5);
+        // enemy objects take 3 args: their x and y start vals and a speed modifier
+        window.allEnemies.push(new Enemy(xval, starty, speedy));
+
+        console.log("This enemy will be at %s and %s with speed %s", xval, starty, speedy);
+
+        starty+=83; // will draw next enemy one line down
+    }
+
+    // how about an object to specify scale of game world tiles in px
+    window.gameWorld = {
+        playerXoff: 32,
+        playerYoff: 69,
+        tileHeight: 83,
+        tileWidth: 101,
+        setTileHeight: function(newHeight) { this.tileHeight = newHeight },
+        setTileWidth: function(newWidth) { this.tileWidth = newWidth }
+    };
+
 // Test level builder, may move to seperate file
 window.levels = [];
-//window.currentLevel = 0;
+window.currentLevel = 0;
 window.levelComplete = false;
 levels.push(new Level(0,
-                      {rows:7, cols:7},
-                     ['images/stone-block.png',
+                      {rows:6, cols:7},
+                      [['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],
                      'images/stone-block.png',
                      'images/stone-block.png',
                      'images/stone-block.png',
                      'images/stone-block.png',
-                     'images/stone-block.png',
-                     'images/stone-block.png'],
-                      {x:335, y:570},
+                       ['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],],
+                      {x:335, y:487},
                       {x:335, y:72}
                      ));
 levels.push(new Level(1,
@@ -188,10 +218,39 @@ levels.push(new Level(1,
                         'images/stone-block.png',
                         'images/stone-block.png',
                         'images/stone-block.png',
-                        'images/grass-block.png'],
-                      {x:234, y:570},
+                      ['images/water-block.png','images/water-block.png','images/water-block.png','images/grass-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],],
+                      {x:234, y:487},
                       {x:335, y:72}
                      ));
+
+// instantiate player cuz after levels obj defined
+window.player = new Player();
+
+/****** Helper functions *******/
+// simply check player's position when called and compare to currentLevel's goal coordinates
+function goalReached() {
+    return player.x === levels[currentLevel].exitPt.x && player.y === levels[currentLevel].exitPt.y;
+}
+
+function playerInBounds(key) {
+    switch (key) {
+        case 'left':
+            return player.x - 101 > 0;
+
+        case 'right':
+            return player.x + 101 < levels[currentLevel].levelSize.cols * 101;
+
+        case 'up':
+
+            return player.y - 83 > 0;
+
+        case 'down':
+
+            return player.y + 83 < levels[currentLevel].levelSize.rows * 83;
+
+        default:
+    }
+}
 
 // Overloaded to allow two range args or default to 1000 to calc enemy stagger
 function randomizer(min, max) {
