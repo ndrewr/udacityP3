@@ -37,7 +37,7 @@ var Engine = (function(global) {
     // Prompt box
     var promptBox = doc.createElement('div');
     promptBox.id = 'prompt';
-    promptBox.innerHTML = '<h2>It is over.</h2><p>...but you can try again!</p><button id="restart">Lets go!</button>';
+    promptBox.innerHTML = '<p>...but you can try again!</p><button id="restart">Lets go!</button>';
 //    doc.body.appendChild(promptBox);
     doc.getElementById('mainscreen').appendChild(promptBox);
 
@@ -45,7 +45,7 @@ var Engine = (function(global) {
     doc.getElementById('restart').onclick = init;
 
     // Dialog box
-    doc.getElementById('mainscreen').appendChild(doc.createElement('h3'));
+    //doc.getElementById('mainscreen').appendChild(doc.createElement('h3'));
 
     // place a div element with game messages
 //    var startBtn = doc.createElement('button');
@@ -83,7 +83,7 @@ var Engine = (function(global) {
         if(levelComplete) {
 						if(currentLevel === 2) {
 								console.log("The game is done. Well done.");
-								doc.getElementsByTagName('h3')[0].innerHTML = "Maktub!";
+								//doc.getElementsByTagName('h3')[0].innerHTML = "Maktub!";
 						}
 						else {
 								currentLevel++;
@@ -104,6 +104,8 @@ var Engine = (function(global) {
     function init() {
         reset();
         lastTime = Date.now();
+				startTime = lastTime;
+			console.log("start time is %s", startTime);
         main();
     }
 
@@ -146,11 +148,10 @@ var Engine = (function(global) {
     }
 
     function gameOver() {
-        doc.getElementsByTagName('h3')[0].innerHTML = "Your busy day is at an end.";
+        //doc.getElementsByTagName('h3')[0].innerHTML = "Your busy day is at an end.";
         // Display prompt offering restart
         gameRunning = false;
         doc.getElementById('prompt').style.display = 'inherit';
-
     }
 
     /* This is called by the update function  and loops through all of the
@@ -217,6 +218,17 @@ var Engine = (function(global) {
         }
 
         renderEntities();
+				// use game clock to display contextual messages to player
+				if(gameRunning && (lastTime - startTime < 2000)) {
+					flashText("Forward!"); // flash a "Ready" message to player
+				}
+				else if(levelComplete) {
+					flashText("Maktub!");
+				}
+				else if(!gameRunning) {
+					flashText("Game Over!");
+				}
+
     }
 
     /* This function is called by the render function and is called on each game
@@ -243,10 +255,35 @@ var Engine = (function(global) {
         player.reset(levels[currentLevel].startPt.x, levels[currentLevel].startPt.y);
 				resetEnemies(); // kick off new enemy placements
 
-        doc.getElementsByTagName('h3')[0].innerHTML = "You can do it.";
+        //doc.getElementsByTagName('h3')[0].innerHTML = "You can do it.";
         doc.getElementById('prompt').style.display = 'none';
         //init();
     }
+
+		/* This function displays centered game text to the player
+		 * Takes two args: text to display; # secs to persist, no second arg means text doesnt timeout
+		 */
+		function flashText(displayText, duration) {
+			//console.log("displaying text");
+
+					ctx.save();
+					ctx.shadowColor = "yellow";
+					ctx.shadowOffsetX = 0;
+					ctx.shadowOffsetY = 0;
+					ctx.shadowBlur = 30;
+
+					ctx.fillStyle = "rgb(50, 50, 50)";
+					ctx.font = "64px Ewert";
+					ctx.textAlign = "center";
+					ctx.textBaseline = "center";
+					if(levelComplete) {
+						ctx.fillText("Maktub!", 350, 300);
+					}
+					else {
+						ctx.fillText(displayText, 350, 300);
+					}
+					ctx.restore();
+		}
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
