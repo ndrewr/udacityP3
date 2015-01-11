@@ -85,8 +85,8 @@ Player.prototype.handleInput = function(key) {
     // values 32, 69 rep offset to center character avatar within tile given sprite size
     // using levels object to dynamically check current level size...ex to get center of field:
     // Math.floor(levels[currentLevel].levelSize.rows / 2) + 32
-    if (playerInBounds(key)) {
 
+	//if (playerInBounds(key)) {
         switch (key) {
             case 'left':
                     //render one step left
@@ -149,7 +149,8 @@ Player.prototype.handleInput = function(key) {
             default:
                 //Nothing to see here
         }
-    }
+    //}
+
     console.log("player position is now %s and %s", player.x, player.y);
 }
 
@@ -238,19 +239,22 @@ function goalReached() {
 }
 
 function playerInBounds(key) {
+
     switch (key) {
         case 'left':
-            return player.x - 101 > 0;
+						if(player.y > 404 && player.x === levels[currentLevel].startPt.x) return false;
+            else return player.x - 101 > 0;
 
         case 'right':
-            return player.x + 101 < levels[currentLevel].levelSize.cols * 101;
+						if(player.y > 404 && player.x === levels[currentLevel].startPt.x) return false;
+            else return player.x + 101 < levels[currentLevel].levelSize.cols * 101;
 
         case 'up':
-
+						if(player.y === 155 && player.x !== 335) return false;
             return player.y - 83 > 0;
 
         case 'down':
-
+						if(player.y === 404 && player.x !== levels[currentLevel].startPt.x) return false;
             return player.y + 83 < levels[currentLevel].levelSize.rows * 83;
 
         default:
