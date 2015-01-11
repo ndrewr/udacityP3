@@ -13,7 +13,8 @@ var Enemy = function(x, y, speed) {
     if (speed)
         this.speed = speed;
     else
-        this.speed = 3;
+			this.speed = randomizer(3,5);
+	;
 }
 
 // Update the enemy's position, required method for game
@@ -169,35 +170,24 @@ Level.prototype.goalReached = function(playerX, playerY) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+// instantiate player cuz after levels obj defined
+window.allEnemies = [];
 
-    window.allEnemies = [];
-    var startx = 0,
-        starty = 130; //starty = 63;
-    for(var i=0; i < 4; i++) {
-        var xval = startx - randomizer(),
-            speedy = randomizer(3,5);
-        // enemy objects take 3 args: their x and y start vals and a speed modifier
-        window.allEnemies.push(new Enemy(xval, starty, speedy));
-
-        console.log("This enemy will be at %s and %s with speed %s", xval, starty, speedy);
-
-        starty+=83; // will draw next enemy one line down
-    }
-
-    // how about an object to specify scale of game world tiles in px
-    window.gameWorld = {
-        playerXoff: 32,
-        playerYoff: 69,
-        tileHeight: 83,
-        tileWidth: 101,
-        setTileHeight: function(newHeight) { this.tileHeight = newHeight },
-        setTileWidth: function(newWidth) { this.tileWidth = newWidth }
-    };
+// how about an object to specify scale of game world tiles in px
+window.gameWorld = {
+		playerXoff: 32,
+		playerYoff: 69,
+		tileHeight: 83,
+		tileWidth: 101,
+		setTileHeight: function(newHeight) { this.tileHeight = newHeight },
+		setTileWidth: function(newWidth) { this.tileWidth = newWidth }
+};
 
 // Test level builder, may move to seperate file
 window.levels = [];
 window.currentLevel = 0;
 window.levelComplete = false;
+
 levels.push(new Level(0,
                       {rows:6, cols:7},
                       [['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],
@@ -210,7 +200,7 @@ levels.push(new Level(0,
                       {x:335, y:72}
                      ));
 levels.push(new Level(1,
-                      {rows:7, cols:7},
+                      {rows:6, cols:7},
                      [
                         ['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],
                         'images/stone-block.png',
@@ -218,18 +208,33 @@ levels.push(new Level(1,
                         'images/stone-block.png',
                         'images/stone-block.png',
                         'images/stone-block.png',
-                      ['images/water-block.png','images/water-block.png','images/water-block.png','images/grass-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],],
+    ['images/water-block.png','images/water-block.png', 'images/grass-block.png', 'images/water-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],],
                       {x:234, y:487},
                       {x:335, y:72}
                      ));
+levels.push(new Level(2,
+                      {rows:6, cols:7},
+                      [
+    ['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],
+    'images/stone-block.png',
+    'images/stone-block.png',
+    'images/stone-block.png',
+    'images/stone-block.png',
+    'images/stone-block.png',
+    ['images/water-block.png','images/water-block.png', 'images/grass-block.png', 'images/grass-block.png', 'images/grass-block.png', 'images/water-block.png','images/water-block.png'],],
+                      {x:335, y:487},
+                      {x:335, y:72}
+                     ));
 
-// instantiate player cuz after levels obj defined
-window.player = new Player();
+
+window.player = new Player(); //Player object references levels objects so must be instantiated last
+
 
 /****** Helper functions *******/
 // simply check player's position when called and compare to currentLevel's goal coordinates
 function goalReached() {
-    return player.x === levels[currentLevel].exitPt.x && player.y === levels[currentLevel].exitPt.y;
+
+		return player.x === levels[currentLevel].exitPt.x && player.y === levels[currentLevel].exitPt.y;
 }
 
 function playerInBounds(key) {
@@ -250,6 +255,18 @@ function playerInBounds(key) {
 
         default:
     }
+}
+
+// creates new randomly generated enemy array
+function resetEnemies() {
+	console.log("Generating new enemy layout...");
+	allEnemies = [];
+	var starty = 130; //starty = 63;
+	for(var i=0; i < 4; i++) {
+		// enemy objects take 3 args: their x and y start vals and a speed modifier
+		window.allEnemies.push(new Enemy(-randomizer(), starty));
+		starty+=83; // will draw next enemy one line down
+	}
 }
 
 // Overloaded to allow two range args or default to 1000 to calc enemy stagger

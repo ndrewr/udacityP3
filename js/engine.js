@@ -41,7 +41,7 @@ var Engine = (function(global) {
 //    doc.body.appendChild(promptBox);
     doc.getElementById('mainscreen').appendChild(promptBox);
 
-    // Reset button
+    // Restart button
     doc.getElementById('restart').onclick = init;
 
     // Dialog box
@@ -81,10 +81,16 @@ var Engine = (function(global) {
          * function again as soon as the browser is able to draw another frame.
          */
         if(levelComplete) {
-            currentLevel++;
-            console.log("Congrats! Proceeding to level %s", currentLevel);
-            levelComplete = false;
-            init();
+						if(currentLevel === 2) {
+								console.log("The game is done. Well done.");
+								doc.getElementsByTagName('h3')[0].innerHTML = "Maktub!";
+						}
+						else {
+								currentLevel++;
+								console.log("Congrats! Proceeding to level %s", currentLevel);
+								levelComplete = false;
+								init();
+						}
         }
         else {
             if(gameRunning) win.requestAnimationFrame(main);
@@ -101,7 +107,7 @@ var Engine = (function(global) {
         main();
     }
 
-    /* This function is called by main (our game loop) and itself calls all
+    /* This function is called by main (our game loop) and itself calls a ll
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
      * same space, for instance when your character should die), you may find
@@ -140,7 +146,7 @@ var Engine = (function(global) {
     }
 
     function gameOver() {
-        doc.getElementsByTagName('h3')[0].innerHTML = "Goodbye my old friend, your busy day is at an end.";
+        doc.getElementsByTagName('h3')[0].innerHTML = "Your busy day is at an end.";
         // Display prompt offering restart
         gameRunning = false;
         doc.getElementById('prompt').style.display = 'inherit';
@@ -204,6 +210,8 @@ var Engine = (function(global) {
                 var tile = (rowImages[row].constructor === Array)? rowImages[row][col] : rowImages[row];
 
                 ctx.drawImage(Resources.get(tile), col * 101, row * 83);
+//                ctx.drawImage(Resources.get(tile), col * 101, row * 83);
+
 //                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
@@ -232,7 +240,8 @@ var Engine = (function(global) {
      */
     function reset() {
         gameRunning = true;
-        player.reset();
+        player.reset(levels[currentLevel].startPt.x, levels[currentLevel].startPt.y);
+				resetEnemies(); // kick off new enemy placements
 
         doc.getElementsByTagName('h3')[0].innerHTML = "You can do it.";
         doc.getElementById('prompt').style.display = 'none';
