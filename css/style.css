@@ -35,7 +35,7 @@ header h2 {
 		align-items: center;
 		justify-content: space-around;
 
-		width: 80%;
+		width: 90%;
 		top: 20px;
 }
 
@@ -47,6 +47,11 @@ header h2 {
 		border-radius: 1em;
 		background: gray;
 		color: #fff;
+
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+		justify-content: space-around;
 }
 
 canvas {
@@ -161,5 +166,15 @@ h3 {
 }
 .icon-linkedin3:before {
 	content: '\e616';
+}
+
+
+/* Media queries */
+@media only screen and (max-width: 960px) {
+	#sidebar {
+		width: 80%;
+		flex-flow: row;
+		min-height: 100px;
+	}
 }
 

@@ -24,8 +24,8 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime,
-        gameRunning = true, // ID var to start and stop animation loop
-        currentLevel = 0;   // Tracks current level to display
+        gameRunning = true; // ID var to start and stop animation loop
+        //currentLevel = 0;   // Tracks current level to display
 
     //    canvas.width = 505;
     //    canvas.height = 606;
