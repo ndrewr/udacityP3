@@ -13,17 +13,20 @@ var Enemy = function(x, y, speed) {
 			this.speed = randomizer(2,4);
 }
 
-// Update the enemy's position; Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // Multiply movement by the dt parameter to ensure
-		// the game runs at the same speed for all computers.
-    // 101 is the width of each tile...this.speed is enemy's unique speed modifier
-    this.x = (this.x > 600)? 0 : this.x+=(101* dt * this.speed);
-}
+Enemy.prototype = {
+		constructor: Enemy, // necessary?
+		// Update the enemy's position; Parameter: dt, a time delta between ticks
+		update: function(dt) {
+			// Multiply movement by the dt parameter to ensure
+			// the game runs at the same speed for all computers.
+			// 101 is the width of each tile...this.speed is enemy's unique speed modifier
+			this.x = (this.x > 600)? 0 : this.x+=(101* dt * this.speed);
+		},
 
-// Draw the enemy on the screen
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), 0, 70, 101, 100, this.x, this.y, 101, 100);
+		// Draw the enemy on the screen
+		render: function() {
+				ctx.drawImage(Resources.get(this.sprite), 0, 70, 101, 100, this.x, this.y, 101, 100);
+		}
 }
 
 // Player class
@@ -34,37 +37,40 @@ var Player = function() {
 }
 
 // Simply returns player to specified starting pt, default level startPt otherwise
-Player.prototype.reset = function(newX, newY) {
-    if (newX && newY) {
-        if (!isNaN(newX) || !isNaN(newY)) {
-            this.x = newX;
-            this.y = newY;
-        }
-    }
-    else {
-        this.x = levels[currentLevel].startPt.x;
-        this.y = levels[currentLevel].startPt.y;
-    }
+Player.prototype = {
+		constructor: Player,
 
-    this.counter = 0; // counter for sprite animation frame
-    this.xOff = 0;  // offset into spritesheet
-    this.yOff = 0;
-}
+		reset: function(newX, newY) {
+				if (newX && newY) {
+						if (!isNaN(newX) || !isNaN(newY)) {
+								this.x = newX;
+								this.y = newY;
+						}
+				}
+				else {
+						this.x = levels[currentLevel].startPt.x;
+						this.y = levels[currentLevel].startPt.y;
+				}
 
-Player.prototype.update = function() {
-    // Update player position based on last input
-		// Increment sprite animation frame counter
-    this.counter++;
-}
+				this.counter = 0; // counter for sprite animation frame
+				this.xOff = 0;  // offset into spritesheet
+				this.yOff = 0;
+		},
 
-Player.prototype.render = function() {
-		// Determine which sprite to draw based on current counter value; current avatar has 8 frames
-    var count = Math.floor(this.counter / 4);
-    this.xOff = count%8 * 32;
-    ctx.drawImage(Resources.get(this.sprite), this.xOff, this.yOff, 32, 32, this.x, this.y, 32, 32);
-}
+		update: function() {
+				// Update player position based on last input
+				// Increment sprite animation frame counter
+				this.counter++;
+		},
 
-Player.prototype.handleInput = function(key) {
+		render: function() {
+				// Determine which sprite to draw based on current counter value; current avatar has 8 frames
+				var count = Math.floor(this.counter / 4);
+				this.xOff = count%8 * 32;
+				ctx.drawImage(Resources.get(this.sprite), this.xOff, this.yOff, 32, 32, this.x, this.y, 32, 32);
+		},
+
+		handleInput: function(key) {
     // Note: assign a gate spot coord...then check every up input if player has reached gate
     // method: check after adjusting new offset if player has landed on 'special square'...
     // ex 'gate square', 'start square', 'item', 'boss'...stored in window.levelRules obj?
@@ -72,8 +78,6 @@ Player.prototype.handleInput = function(key) {
 
     // each movement switches row in player spritesheet
     // values 32, 83 rep offset to center character avatar within tile given sprite size
-
-	//if (playerInBounds(key)) {
         switch (key) {
             case 'left':
                     //render one step left
@@ -109,10 +113,9 @@ Player.prototype.handleInput = function(key) {
                     break;
             default:
                 //Nothing to see here yet
-        }
-    //}
-
-    console.log("player position is now %s and %s", player.x, player.y);
+      	}
+    		console.log("player position is now %s and %s", player.x, player.y);
+		}
 }
 
 // Level object
@@ -250,3 +253,5 @@ document.addEventListener('keyup', function(e) {
     };
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+/* Accessor methods */
