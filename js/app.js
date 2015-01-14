@@ -10,7 +10,7 @@ var Enemy = function(x, y, speed) {
     if (speed)
         this.speed = speed;
     else
-			this.speed = randomizer(2,4);
+			this.speed = app.randomizer(2,4);
 }
 
 Enemy.prototype = {
@@ -33,7 +33,11 @@ Enemy.prototype = {
 var Player = function() {
     this.sprite = 'images/unit1.png';
     // this call sets starting pos of player
-    this.reset();
+    this.x = 0;
+		this.y = 0;
+		this.counter = 0; // counter for sprite animation frame
+		this.xOff = 0;  // offset into spritesheet
+		this.yOff = 0;
 }
 
 // Simply returns player to specified starting pt, default level startPt otherwise
@@ -48,8 +52,10 @@ Player.prototype = {
 						}
 				}
 				else {
-						this.x = levels[currentLevel].startPt.x;
-						this.y = levels[currentLevel].startPt.y;
+//						this.x = levels[currentLevel].startPt.x;
+//						this.y = levels[currentLevel].startPt.y;
+					this.x = app.getCurrentLevel().startPt.x;
+					this.y = app.getCurrentLevel().startPt.y;
 				}
 
 				this.counter = 0; // counter for sprite animation frame
@@ -81,7 +87,7 @@ Player.prototype = {
         switch (key) {
             case 'left':
                     //render one step left
-                    if (playerInBounds(key)) {
+                    if (app.playerInBounds(key)) {
                         this.x -= 101;
                     }
                     this.yOff = 32;
@@ -89,16 +95,16 @@ Player.prototype = {
             case 'up':
                     //render one step up
                     // Each lvl has a end pt, the only pt a player can traverse to in that row
-                    if (playerInBounds(key)) {
+                    if (app.playerInBounds(key)) {
                         this.y -= 83;
                     }
                     this.yOff = 0;
 
-                    if (goalReached()) levelComplete = true;
+                    if (app.goalReached()) app.setLevelComplete(true);
                     break;
             case 'right':
                     //render one step right
-                    if (playerInBounds(key)) {
+                    if (app.playerInBounds(key)) {
                         this.x += 101;
                     }
                     this.yOff = 96;
@@ -106,7 +112,7 @@ Player.prototype = {
             case 'down':
                     //render one step down
                     // Each lvl has a starting pt, the only pt a player can return to in that row
-                    if(playerInBounds(key)) {
+                    if(app.playerInBounds(key)) {
                         this.y += 83;
                     }
                     this.yOff = 64;
@@ -114,7 +120,7 @@ Player.prototype = {
             default:
                 //Nothing to see here yet
       	}
-    		console.log("player position is now %s and %s", player.x, player.y);
+    		//console.log("player position is now %s and %s", player.x, player.y);
 		}
 }
 
@@ -127,131 +133,166 @@ var Level = function(num, size, levelTiles, start, exit) {
     this.exitPt = exit;
 }
 
-// Optional Level object method to check if goal is reached based on exitPt property
-Level.prototype.goalReached = function(playerX, playerY) {
-    return playerX === this.exitPt.x && playerY === this.exitPt.y;
-}
+// The app object
+var app = (function() {
+
+		// Now instantiate your objects.
+		// Place all enemy objects in an array called allEnemies
+		// Place the player object in a variable called player
+		// instantiate player cuz after levels obj defined
+		var allEnemies = [];
+
+		// how about an object to specify scale of game world tiles in px
+		var gameWorld = {
+				playerXoff: 32,
+				playerYoff: 69,
+				tileHeight: 83,
+				tileWidth: 101,
+				setTileHeight: function(newHeight) { this.tileHeight = newHeight },
+				setTileWidth: function(newWidth) { this.tileWidth = newWidth }
+		};
+
+		// Test level builder, may move to seperate file
+		var levels = [];
+		var currentLevel = 0;
+		var levelComplete = false;
+
+		var player = new Player(); //Player object references levels objects so must be instantiated last
+
+		// Overloaded to allow two range args or default to 1000 to calc enemy stagger
+		function randomize(min, max) {
+			if(!min) return Math.floor(Math.random() * 1000);;
+			return Math.floor(Math.random() * (max - min + 1)) + min; // algorithm from MDN docs
+		};
+
+		// This listens for key presses and sends the keys to your Player.handleInput() method.
+		document.addEventListener('keyup', function(e) {
+			var allowedKeys = {
+				37: 'left',
+				38: 'up',
+				39: 'right',
+				40: 'down'
+			};
+			player.handleInput(allowedKeys[e.keyCode]);
+		});
+
+		return {
+
+				/****** Helper functions *******/
+				// simply check player's position when called and compare to currentLevel's goal coordinates
+				goalReached: function() {
+						return player.x === levels[currentLevel].exitPt.x && player.y === levels[currentLevel].exitPt.y;
+				},
+
+				// Check if player input would be in bounds...return false if not
+				// using levels object to dynamically check current level size...ex to get center of field:
+				playerInBounds: function(key) {
+						switch (key) {
+								case 'left':
+										if(player.y > 404 && player.x === levels[currentLevel].startPt.x) return false;
+										else return player.x - 101 > 0;
+
+								case 'right':
+										if(player.y > 404 && player.x === levels[currentLevel].startPt.x) return false;
+										else return player.x + 101 < levels[currentLevel].levelSize.cols * 101;
+
+								case 'up':
+										if(player.y === 155 && player.x !== levels[currentLevel].exitPt.x) return false;
+										return player.y - 83 > 0;
+
+								case 'down':
+										if(player.y === 404 && player.x !== levels[currentLevel].startPt.x) return false;
+										return player.y + 83 < levels[currentLevel].levelSize.rows * 83;
+
+								default:
+									// nothing currently
+						}
+				},
+
+				// creates new randomly generated enemy array
+				resetEnemies: function() {
+					console.log("Generating new enemy layout...");
+					allEnemies = []; // Most efficient way to empty an array?
+					var starty = 130; // Height offset in level map to draw first enemy
+					for(var i=0; i < 4; i++) {
+						// enemy objects take 3 args: their x and y start vals and a speed modifier
+						allEnemies.push(new Enemy(-randomize(), starty));
+						starty+=83; // will draw next enemy one line down
+					}
+				},
 
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-// instantiate player cuz after levels obj defined
-window.allEnemies = [];
+				/* Accessor methods */
+				getEnemies: function() {
+						return allEnemies;
+				},
+				getPlayer: function() {
+						return player;
+				},
+				getCurrentLevel: function() {
+						return levels[currentLevel];
+				},
+				getCurrentLevelnum: function() {
+						return currentLevel;
+				},
+				increaseLevel: function() {
+						currentLevel++;
+				},
+				isLevelComplete: function() {
+						return levelComplete;
+				},
+				setLevelComplete: function(complete) {
+						levelComplete = complete;
+				},
+				loadLevels: function(customLevels) {
+					levels = customLevels;
+				},
+				getLevel: function(levelNum) {
+					return levels(levelNum);
+				},
 
-// how about an object to specify scale of game world tiles in px
-window.gameWorld = {
-		playerXoff: 32,
-		playerYoff: 69,
-		tileHeight: 83,
-		tileWidth: 101,
-		setTileHeight: function(newHeight) { this.tileHeight = newHeight },
-		setTileWidth: function(newWidth) { this.tileWidth = newWidth }
-};
+				randomizer: function(x, y) {
+					return randomize(x, y);
+				}
+		}
 
-// Test level builder, may move to seperate file
-window.levels = [];
-window.currentLevel = 0;
-window.levelComplete = false;
+}());
 
-levels.push(new Level(0,
-                      {rows:6, cols:7},
-                      [['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],
-                     'images/stone-block.png',
-                     'images/stone-block.png',
-                     'images/stone-block.png',
-                     'images/stone-block.png',
-                       ['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],],
-                      {x:335, y:487},
-                      {x:335, y:72}
-                     ));
-levels.push(new Level(1,
-                      {rows:6, cols:7},
-                     [
+var testlevels = [];
+testlevels.push(new Level(0,
+											{rows:6, cols:7},
+											[['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],
+											 'images/stone-block.png',
+											 'images/stone-block.png',
+											 'images/stone-block.png',
+											 'images/stone-block.png',
+											 ['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],],
+											{x:335, y:487},
+											{x:335, y:72}
+										 ));
+testlevels.push(new Level(1,
+											{rows:6, cols:7},
+											[
 	['images/water-block.png','images/water-block.png','images/water-block.png', 'images/water-block.png', 'images/stone-block.png', 'images/water-block.png','images/water-block.png'],
-                        'images/stone-block.png',
-                        'images/stone-block.png',
-                        'images/stone-block.png',
-                        'images/stone-block.png',
-    ['images/water-block.png','images/water-block.png', 'images/grass-block.png', 'images/water-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],],
-                      {x:234, y:487},
-                      {x:436, y:72}
-                     ));
-levels.push(new Level(2,
-                      {rows:6, cols:7},
-                      [
+	'images/stone-block.png',
+	'images/stone-block.png',
+	'images/stone-block.png',
+	'images/stone-block.png',
+	['images/water-block.png','images/water-block.png', 'images/grass-block.png', 'images/water-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],],
+											{x:234, y:487},
+											{x:436, y:72}
+										 ));
+testlevels.push(new Level(2,
+											{rows:6, cols:7},
+											[
 	['images/water-block.png','images/water-block.png','images/water-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png', 'images/stone-block.png'],
-    'images/stone-block.png',
-    'images/stone-block.png',
-    'images/stone-block.png',
-    'images/stone-block.png',
+	'images/stone-block.png',
+	'images/stone-block.png',
+	'images/stone-block.png',
+	'images/stone-block.png',
 	['images/stone-block.png', 'images/water-block.png','images/water-block.png', 'images/water-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],],
-                      {x:32, y:487},
-                      {x:638, y:72}
-                     ));
+											{x:32, y:487},
+											{x:638, y:72}
+										 ));
 
-
-window.player = new Player(); //Player object references levels objects so must be instantiated last
-
-
-/****** Helper functions *******/
-// simply check player's position when called and compare to currentLevel's goal coordinates
-function goalReached() {
-		return player.x === levels[currentLevel].exitPt.x && player.y === levels[currentLevel].exitPt.y;
-}
-
-// Check if player input would be in bounds...return false if not
-// using levels object to dynamically check current level size...ex to get center of field:
-function playerInBounds(key) {
-    switch (key) {
-        case 'left':
-						if(player.y > 404 && player.x === levels[currentLevel].startPt.x) return false;
-            else return player.x - 101 > 0;
-
-        case 'right':
-						if(player.y > 404 && player.x === levels[currentLevel].startPt.x) return false;
-            else return player.x + 101 < levels[currentLevel].levelSize.cols * 101;
-
-        case 'up':
-						if(player.y === 155 && player.x !== levels[currentLevel].exitPt.x) return false;
-            return player.y - 83 > 0;
-
-        case 'down':
-						if(player.y === 404 && player.x !== levels[currentLevel].startPt.x) return false;
-            return player.y + 83 < levels[currentLevel].levelSize.rows * 83;
-
-        default:
-					// nothing currently
-    }
-}
-
-// creates new randomly generated enemy array
-function resetEnemies() {
-	console.log("Generating new enemy layout...");
-	allEnemies = []; // Most efficient way to empty an array?
-	var starty = 130; // Height offset in level map to draw first enemy
-	for(var i=0; i < 4; i++) {
-		// enemy objects take 3 args: their x and y start vals and a speed modifier
-		window.allEnemies.push(new Enemy(-randomizer(), starty));
-		starty+=83; // will draw next enemy one line down
-	}
-}
-
-// Overloaded to allow two range args or default to 1000 to calc enemy stagger
-function randomizer(min, max) {
-    if(!min) return Math.floor(Math.random() * 1000);;
-    return Math.floor(Math.random() * (max - min + 1)) + min; // algorithm from MDN docs
-}
-
-// This listens for key presses and sends the keys to your Player.handleInput() method.
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
-    player.handleInput(allowedKeys[e.keyCode]);
-});
-
-/* Accessor methods */
+app.loadLevels(testlevels);

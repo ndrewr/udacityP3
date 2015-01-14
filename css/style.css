@@ -54,6 +54,20 @@ header h2 {
 		justify-content: space-around;
 }
 
+.sidebar-bug {
+/*
+		-webkit-clip-path: inset(88px 101px 171px 0px);
+		clip-path: inset(88px 101px 171px 0px);
+*/
+		height: 80px;
+		width: auto;
+		background-image: url(../images/enemy-bug.png);
+		background-size: 50%;
+		background-position: 50% 80%;
+		background-repeat: no-repeat;
+
+}
+
 canvas {
     background: black;
     border: 1px solid black;

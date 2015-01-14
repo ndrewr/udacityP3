@@ -25,20 +25,15 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime,
         gameRunning = true; // ID var to start and stop animation loop
-        //currentLevel = 0;   // Tracks current level to display
 
-    //    canvas.width = 505;
-    //    canvas.height = 606;
     canvas.width = 707;
     canvas.height = 606;
-//    doc.body.appendChild(canvas);
     doc.getElementById('mainscreen').appendChild(canvas);
 
     // Prompt box
     var promptBox = doc.createElement('div');
     promptBox.id = 'prompt';
     promptBox.innerHTML = '<p>...but you can try again!</p><button id="restart">Lets go!</button>';
-//    doc.body.appendChild(promptBox);
     doc.getElementById('mainscreen').appendChild(promptBox);
 
     // Restart button
@@ -46,12 +41,6 @@ var Engine = (function(global) {
 
     // Dialog box
     //doc.getElementById('mainscreen').appendChild(doc.createElement('h3'));
-
-    // place a div element with game messages
-//    var startBtn = doc.createElement('button');
-//    startBtn.nodeName = "start";
-//    startBtn.innerHTML = "again!";
-//    doc.body.appendChild(startBtn);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -80,15 +69,15 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        if(levelComplete) {
-						if(currentLevel === 2) {
+        if(app.isLevelComplete()) {
+						if(app.getCurrentLevelnum() === 2) {
 								console.log("The game is done. Well done.");
-								//doc.getElementsByTagName('h3')[0].innerHTML = "Maktub!";
 						}
 						else {
-								currentLevel++;
-								console.log("Congrats! Proceeding to level %s", currentLevel);
-								levelComplete = false;
+								app.increaseLevel();
+								console.log("Congrats! Proceeding to level %s", app.getCurrentLevelnum());
+								//levelComplete = false;
+								app.setLevelComplete(false);
 								init();
 						}
         }
@@ -105,7 +94,6 @@ var Engine = (function(global) {
         reset();
         lastTime = Date.now();
 				startTime = lastTime;
-			console.log("start time is %s", startTime);
         main();
     }
 
@@ -121,29 +109,21 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         checkCollisions();
-        // Note: player y and enemy y is off by 9 px...for x val, we add 81 because position starts at left top of bug and we want to account for blank space in the sprites
-//        allEnemies.forEach(function(enemy, index) {
-//            var enemyNose = enemy.x + 101;
-//            if ((enemyNose >= player.x && enemy.x <= player.x + 32) && (enemy.y === player.y - 25)) {
-//
-//               // Call Game Over state
-//               console.log("The End. Enemy %s was at %s and %s", index, enemy.x, enemy.y);
-//               gameOver();
-//           }
-//        });
     }
     
-    // cut the number of collision checks
-    // by directly checking corresponding enemy in array index same sto the players current pos
+    /* cut the number of collision checks
+     * by directly checking corresponding enemy in array index same sto the players current pos
+	   * Note: player y and enemy y is off by 9 px...
+		 */
     function checkCollisions() {
-        allEnemies.forEach(function(enemy, index) {
-            var enemyNose = enemy.x + 101;
-            if ((enemyNose >= player.x && enemy.x <= player.x + 32) && (enemy.y === player.y - 25)) {
-
+        app.getEnemies().forEach(function(enemy, index) {
+            var enemyNose = enemy.x + 91; // 91 represents visible length of enemy sprite
+            if ((enemyNose >= app.getPlayer().x && enemy.x <= app.getPlayer().x + 32) && (enemy.y === app.getPlayer().y - 25))
+						{
                // Call Game Over state
                console.log("The End. Enemy %s was at %s and %s", index, enemy.x, enemy.y);
                gameOver();
-           }
+           	}
         });
     }
 
@@ -162,10 +142,10 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+				app.getEnemies().forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        app.getPlayer().update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -178,21 +158,9 @@ var Engine = (function(global) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
-
-        var rowImages = levels[currentLevel].levelLayout,
-
-//        var rowImages = [
-//                //'images/water-block.png',   // Top row is water
-//                ['images/water-block.png','images/water-block.png','images/water-block.png','images/stone-block.png', 'images/water-block.png', 'images/water-block.png','images/water-block.png'],
-//                'images/stone-block.png',   // Row 1 of 3 of stone
-//                'images/stone-block.png',   // Row 2 of 3 of stone
-//                'images/stone-block.png',   // Row 3 of 3 of stone
-//                'images/stone-block.png',   // Row 3 of 3 of stone
-//                'images/stone-block.png',   // Row 3 of 3 of stone
-//                'images/grass-block.png',   // Row 1 of 2 of grass
-//            ],
-            numRows = levels[currentLevel].levelSize.rows,
-            numCols = levels[currentLevel].levelSize.cols,
+			var rowImages = app.getCurrentLevel().levelLayout,
+					numRows = app.getCurrentLevel().levelSize.rows,
+					numCols = app.getCurrentLevel().levelSize.cols,
             row, col;
 
         /* Loop through the number of rows and columns we've defined above
@@ -201,19 +169,13 @@ var Engine = (function(global) {
          */
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
-                /* The drawImage function of the canvas' context element
-                 * requires 3 parameters: the image to draw, the x coordinate
-                 * to start drawing and the y coordinate to start drawing.
-                 * We're using our Resources helpers to refer to our images
+                /* We're using our Resources helpers to refer to our images
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
                 var tile = (rowImages[row].constructor === Array)? rowImages[row][col] : rowImages[row];
 
                 ctx.drawImage(Resources.get(tile), col * 101, row * 83);
-//                ctx.drawImage(Resources.get(tile), col * 101, row * 83);
-
-//                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
 
@@ -222,7 +184,7 @@ var Engine = (function(global) {
 				if(gameRunning && (lastTime - startTime < 2000)) {
 					flashText("Forward!"); // flash a "Ready" message to player
 				}
-				else if(levelComplete) {
+				else if(app.isLevelComplete()) {
 					flashText("Maktub!");
 				}
 				else if(!gameRunning) {
@@ -239,11 +201,11 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        allEnemies.forEach(function(enemy) {
+        app.getEnemies().forEach(function(enemy) {
             enemy.render();
         });
 
-        player.render();
+        app.getPlayer().render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -252,10 +214,9 @@ var Engine = (function(global) {
      */
     function reset() {
         gameRunning = true;
-        player.reset(levels[currentLevel].startPt.x, levels[currentLevel].startPt.y);
-				resetEnemies(); // kick off new enemy placements
+				app.getPlayer().reset(app.getCurrentLevel().startPt.x, app.getCurrentLevel().startPt.y);
+				app.resetEnemies(); // kick off new enemy placements
 
-        //doc.getElementsByTagName('h3')[0].innerHTML = "You can do it.";
         doc.getElementById('prompt').style.display = 'none';
         //init();
     }
@@ -276,7 +237,7 @@ var Engine = (function(global) {
 					ctx.font = "64px Ewert";
 					ctx.textAlign = "center";
 					ctx.textBaseline = "center";
-					if(levelComplete) {
+					if(app.isLevelComplete()) {
 						ctx.fillText("Maktub!", 350, 300);
 					}
 					else {
