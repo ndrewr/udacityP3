@@ -40,9 +40,16 @@ var Engine = (function(global) {
 	promptBox.innerHTML = '<p>...but you can try again!</p><button id="restart">Lets go!</button>';
 	doc.getElementById('mainscreen').appendChild(promptBox);
 
-	// Restart button
+	// Restart button...continue
 	doc.getElementById('restart').onclick = restart;
 
+	// Rebegin button...start from the beginning
+	var rebeginButton = doc.createElement('button');
+	rebeginButton.id = 'rebegin';
+	rebeginButton.onclick = rebegin;
+	rebeginButton.textContent = 'reBEGIN!';
+	rebeginButton.className = 'textureGray';
+	doc.getElementById('mainscreen').appendChild(rebeginButton);
 
 	/* This function serves as the kickoff point for the game loop itself
 	 * and handles properly calling the update and render methods.
@@ -107,6 +114,20 @@ var Engine = (function(global) {
 		setTimeout(init, 1000);
 	}
 
+	/* Start the game over from the beginning
+	 */
+	function rebegin() {
+		new Audio('../sounds/startup1.ogg').play(); // play game start sound effect
+		setTimeout(
+			function() {
+				app.setCurrentLevel();
+				app.setLevelComplete(false);
+				doc.getElementById('rebegin').style.display = 'none';
+				doc.getElementById('player').play();
+				init()
+			}, 3000);
+	}
+
 	/* This function does some initial setup that should only occur once,
 	 * particularly setting the lastTime variable that is required for the
 	 * game loop.
@@ -155,8 +176,11 @@ var Engine = (function(global) {
 	function gameWin() {
 		new Audio('../sounds/gong.ogg').play();
 		doc.getElementById('player').pause();
-
-		// display victory message
+		var btn = doc.getElementById('rebegin').style.display = 'inherit';
+		setTimeout(function() {
+			var btn = doc.getElementById('rebegin');
+			btn.style.top='350px';
+		}, 4500);
 	}
 
 	/* This is called by the update function  and loops through all of the

@@ -11,7 +11,7 @@ var Enemy = function (x, y, speed) {
 	if (speed)
 		this.speed = speed;
 	else
-		this.speed = app.randomize(2, 4);
+		this.speed = app.randomize(2, 3);
 }
 
 Enemy.prototype = {
@@ -123,7 +123,7 @@ var Level = function (num, size, levelTiles, start, exit) {
 var app = (function () {
 	var allEnemies = [],
 		levels = [],
-		currentLevel = 0,
+		currentLevel = 4,
 		levelComplete = false,
 		player = new Player(); //Player object references levels objects so must be instantiated last
 
@@ -195,6 +195,12 @@ var app = (function () {
 		},
 		getCurrentLevel: function () {
 			return levels[currentLevel];
+		},
+		setCurrentLevel: function (levelchoice) {
+			if (!isNaN(levelchoice)) {
+				currentLevel = levelchoice;
+			}
+			else currentLevel = 0;
 		},
 		getCurrentLevelnum: function () {
 			return currentLevel;
