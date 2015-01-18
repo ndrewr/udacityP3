@@ -3,22 +3,12 @@
  * draws the initial game board on the screen, and then calls the update and
  * render methods on your player and enemy objects (defined in your app.js).
  *
- * A game engine works by drawing the entire game screen over and over, kind of
- * like a flipbook you may have created as a kid. When your player moves across
- * the screen, it may look like just that image/character is moving or being
- * drawn but that is not the case. What's really happening is the entire "scene"
- * is being drawn over and over, presenting the illusion of animation.
- *
  * This engine is available globally via the Engine variable and it also makes
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
 
 var Engine = (function(global) {
-    /* Predefine the variables we'll be using within this scope,
-     * create the canvas element, grab the 2D context for that canvas
-     * set the canvas elements height/width and add it to the DOM.
-     */
     var doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
@@ -26,21 +16,35 @@ var Engine = (function(global) {
         lastTime,
         gameRunning = true; // ID var to start and stop animation loop
 
+
+		// create game start/explanation screen
+		var startScreen = doc.createElement('div');
+		startScreen.id = "startScreen";
+		doc.getElementById('container').appendChild(startScreen);
+
+	// Dialog box
+		var startButton = doc.createElement('button');
+		startButton.onclick = kickoff;
+		startButton.textContent = "BEGIN!";
+		startButton.className = "textureGray";
+		doc.getElementById('startScreen').appendChild(startButton);
+
     canvas.width = 707;
     canvas.height = 606;
     doc.getElementById('mainscreen').appendChild(canvas);
 
+
     // Prompt box
     var promptBox = doc.createElement('div');
     promptBox.id = 'prompt';
+		promptBox.className = 'textureGray';
     promptBox.innerHTML = '<p>...but you can try again!</p><button id="restart">Lets go!</button>';
     doc.getElementById('mainscreen').appendChild(promptBox);
 
     // Restart button
-    doc.getElementById('restart').onclick = init;
+    doc.getElementById('restart').onclick = restart;
 
-    // Dialog box
-    //doc.getElementById('mainscreen').appendChild(doc.createElement('h3'));
+
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -86,6 +90,33 @@ var Engine = (function(global) {
         }
     }
 
+		/*
+		 * This function sets everything in motion
+		 */
+		function kickoff() {
+//				document.getElementById('startScreen').className = "poof";
+
+			new Audio("../sounds/dun3.mp3").play();
+
+			document.getElementById('startScreen').style.opacity = "0";
+			setTimeout(
+				function() {
+					document.getElementById('startScreen').style.display = "none";
+				}, 2000);
+			init();
+		}
+
+		/*
+		 * This function handles transition into game restart
+		 */
+		function restart() {
+				// delay just a sec to allow sound effect and css animation
+
+			new Audio("../sounds/dun3.mp3").play();
+
+				setTimeout(init, 1000);
+		}
+
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
      * game loop.
@@ -122,6 +153,7 @@ var Engine = (function(global) {
 						{
                // Call Game Over state
                console.log("The End. Enemy %s was at %s and %s", index, enemy.x, enemy.y);
+							new Audio("../sounds/chomp.mp3").play();
                gameOver();
            	}
         });
@@ -206,6 +238,14 @@ var Engine = (function(global) {
         });
 
         app.getPlayer().render();
+
+				// draw the goal object, ie The Princess
+			if(app.isLevelComplete())	{
+				ctx.drawImage(Resources.get('images/unit3.png'), 0, 64, 32, 32, app.getCurrentLevel().exitPt.x, app.getCurrentLevel().exitPt.y, 32, 32);
+			}
+			else {
+				ctx.drawImage(Resources.get('images/unit4.png'), 0, 64, 32, 32, app.getCurrentLevel().exitPt.x, app.getCurrentLevel().exitPt.y, 32, 32);
+			}
     }
 
     /* This function does nothing but it could have been a good place to
@@ -258,9 +298,15 @@ var Engine = (function(global) {
         'images/char-boy.png',
         // new grapics
         'images/unit1.png',
+				'images/unit4.png',
+				'images/unit3.png',
         'images/automapping-terrain.png'
     ]);
-    Resources.onReady(init);
+
+	// if I change the kickoff init() call here to a button press i can control game start
+		//Resources.onReady(init);
+
+
 
     /* Assign the canvas' context object to the global variable (the window
      * object when run in a browser) so that developer's can use it more easily

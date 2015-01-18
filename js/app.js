@@ -10,7 +10,7 @@ var Enemy = function(x, y, speed) {
     if (speed)
         this.speed = speed;
     else
-			this.speed = app.randomizer(2,4);
+			this.speed = app.randomize(2,4);
 }
 
 Enemy.prototype = {
@@ -52,8 +52,6 @@ Player.prototype = {
 						}
 				}
 				else {
-//						this.x = levels[currentLevel].startPt.x;
-//						this.y = levels[currentLevel].startPt.y;
 					this.x = app.getCurrentLevel().startPt.x;
 					this.y = app.getCurrentLevel().startPt.y;
 				}
@@ -79,21 +77,19 @@ Player.prototype = {
 		handleInput: function(key) {
     // Note: assign a gate spot coord...then check every up input if player has reached gate
     // method: check after adjusting new offset if player has landed on 'special square'...
-    // ex 'gate square', 'start square', 'item', 'boss'...stored in window.levelRules obj?
-    // part of larger level obj that also has rowImages, level counter, winning condition
+    // ex 'gate square', 'start square', 'item', 'boss'...stored in window.
+    // Future: part of larger level obj that also has rowImages, level counter, winning condition
 
     // each movement switches row in player spritesheet
     // values 32, 83 rep offset to center character avatar within tile given sprite size
         switch (key) {
             case 'left':
-                    //render one step left
                     if (app.playerInBounds(key)) {
                         this.x -= 101;
                     }
                     this.yOff = 32;
                     break;
             case 'up':
-                    //render one step up
                     // Each lvl has a end pt, the only pt a player can traverse to in that row
                     if (app.playerInBounds(key)) {
                         this.y -= 83;
@@ -103,14 +99,12 @@ Player.prototype = {
                     if (app.goalReached()) app.setLevelComplete(true);
                     break;
             case 'right':
-                    //render one step right
                     if (app.playerInBounds(key)) {
                         this.x += 101;
                     }
                     this.yOff = 96;
                     break;
             case 'down':
-                    //render one step down
                     // Each lvl has a starting pt, the only pt a player can return to in that row
                     if(app.playerInBounds(key)) {
                         this.y += 83;
@@ -135,33 +129,28 @@ var Level = function(num, size, levelTiles, start, exit) {
 
 // The app object
 var app = (function() {
-
-		// Now instantiate your objects.
 		// Place all enemy objects in an array called allEnemies
 		// Place the player object in a variable called player
 		// instantiate player cuz after levels obj defined
-		var allEnemies = [];
+		var allEnemies = [],
+				levels = [],
+				currentLevel = 0,
+				levelComplete = false,
+				player = new Player(); //Player object references levels objects so must be instantiated last
 
 		// how about an object to specify scale of game world tiles in px
 		var gameWorld = {
-				playerXoff: 32,
-				playerYoff: 69,
-				tileHeight: 83,
-				tileWidth: 101,
-				setTileHeight: function(newHeight) { this.tileHeight = newHeight },
-				setTileWidth: function(newWidth) { this.tileWidth = newWidth }
+			playerXoff: 32,
+			playerYoff: 69,
+			tileHeight: 83,
+			tileWidth: 101,
+			setTileHeight: function(newHeight) { this.tileHeight = newHeight },
+			setTileWidth: function(newWidth) { this.tileWidth = newWidth }
 		};
-
-		// Test level builder, may move to seperate file
-		var levels = [];
-		var currentLevel = 0;
-		var levelComplete = false;
-
-		var player = new Player(); //Player object references levels objects so must be instantiated last
 
 		// Overloaded to allow two range args or default to 1000 to calc enemy stagger
 		function randomize(min, max) {
-			if(!min) return Math.floor(Math.random() * 1000);;
+			if(!min) return Math.floor(Math.random() * 1000);
 			return Math.floor(Math.random() * (max - min + 1)) + min; // algorithm from MDN docs
 		};
 
@@ -177,7 +166,6 @@ var app = (function() {
 		});
 
 		return {
-
 				/****** Helper functions *******/
 				// simply check player's position when called and compare to currentLevel's goal coordinates
 				goalReached: function() {
@@ -221,7 +209,6 @@ var app = (function() {
 					}
 				},
 
-
 				/* Accessor methods */
 				getEnemies: function() {
 						return allEnemies;
@@ -250,14 +237,55 @@ var app = (function() {
 				getLevel: function(levelNum) {
 					return levels(levelNum);
 				},
-
-				randomizer: function(x, y) {
+				randomize: function(x, y) {
 					return randomize(x, y);
 				}
 		}
-
 }());
 
+
+/*
+ * Event listeners
+ */
+	// add hover 'swap' effects to anchor tags
+	var anchors = document.getElementsByTagName('A');
+
+for (var i=0; i<anchors.length; i++) {
+	anchors[i].addEventListener('mouseover', function() {
+		// do stuff
+		//this.classname = "";
+		if (this.className === "icon-github1")
+				this.className = "icon-github2";
+		else if (this.className === "icon-steam")
+				this.className = "icon-wink";
+	});
+	anchors[i].addEventListener('mouseout', function() {
+		// do stuff
+		//this.classname = "";
+		if (this.className === "icon-github2")
+				this.className = "icon-github1";
+		else if (this.className === "icon-wink")
+				this.className = "icon-steam";
+	});
+
+}
+//anchors.forEach(function(badge) {
+//		badge.addEventListener('mouseover', function() {
+//				// do stuff
+//				this.className = "icon-github2";
+//		});
+//		badge.addEventListener('mouseout', function() {
+//			// do stuff
+//				this.className = "icon-github1";
+//		});
+//
+//	});
+
+
+
+/*
+ * Test levels data in the app.js file to save a network request...fun to build random level generator instead
+ */
 var testlevels = [];
 testlevels.push(new Level(0,
 											{rows:6, cols:7},
