@@ -2,7 +2,6 @@
 v2.0 | 20110126
 License: none (public domain)
 */
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -34,20 +33,7 @@ body {
 ol, ul {
 	list-style: none;
 }
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
 /***************************** end reset ******************************/
-
 
 .textureGray {
 	background-color: #616773;
@@ -56,29 +42,28 @@ table {
 }
 
 body {
-    text-align: center;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-/*    background: #000;*/
-    font-family: 'Nova Oval', cursive;
+	text-align: center;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	font-family: 'Nova Oval', cursive;
 
-		background-color:silver;
-		background-image:
-		radial-gradient(circle at 100% 150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
-		radial-gradient(circle at 0    150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
-		radial-gradient(circle at 50%  100%, white 10%, silver 11%, silver 23%, white 24%, white 30%, silver 31%, silver 43%, white 44%, white 50%, silver 51%, silver 63%, white 64%, white 71%, transparent 71%, transparent),
-		radial-gradient(circle at 100% 50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent),
-		radial-gradient(circle at 0    50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent);
-		background-size:100px 50px;
+	background-color:silver;
+	background-image:
+	radial-gradient(circle at 100% 150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
+	radial-gradient(circle at 0    150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
+	radial-gradient(circle at 50%  100%, white 10%, silver 11%, silver 23%, white 24%, white 30%, silver 31%, silver 43%, white 44%, white 50%, silver 51%, silver 63%, white 64%, white 71%, transparent 71%, transparent),
+	radial-gradient(circle at 100% 50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent),
+	radial-gradient(circle at 0    50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent);
+	background-size:100px 50px;
 }
 
 #startScreen {
-		position: absolute;
-		height: 100%;
-		width: 100%;
-		left: 0;
-		text-align: center;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	text-align: center;
 
 	background-image:
 		radial-gradient(circle at 100% 150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
@@ -88,16 +73,12 @@ body {
 		radial-gradient(circle at 0    50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent);
 	background-size:100px 50px;
 
-	transition: all 5s;
-
-
+	transition: all 5s; /* for start screen fade effect */
 }
 
 #startScreen button {
-
 	display: inline-block;
 	margin: 0 auto;
-/*	position: absolute;*/
 	margin-top: 250px;
 	width: 200px;
 	height: 100px;
@@ -108,11 +89,8 @@ body {
 	font-size: 2.6em;
 	color: gray;
 	box-shadow: 0px 8px 0px -1px #777, 0px 24px 12px -8px #444;
-
 	-webkit-animation: floaty 2.5s linear infinite;
 	animation: floaty 2.5s linear infinite;
-
-
 }
 
 #startScreen button:hover {
@@ -126,7 +104,6 @@ body {
 	25% {
 		margin-top: 252px;
 		box-shadow: 0px 8px 0px -1px #777, 0px 20px 12px -8px #444;
-
 	}
 	50% {
 		margin-top: 255px;
@@ -135,12 +112,10 @@ body {
 	75% {
 		margin-top: 252px;
 		box-shadow: 0px 8px 0px -1px #777, 0px 20px 12px -8px #444;
-
 	}
 	100% {
 		margin-top: 250px;
 		box-shadow: 0px 8px 0px -1px #777, 0px 24px 12px -8px #444;
-
 	}
 }
 
@@ -148,7 +123,6 @@ body {
 	25% {
 		margin-top: 252px;
 		box-shadow: 0px 12px 8px -6px #444;
-
 	}
 	50% {
 		margin-top: 255px;
@@ -157,114 +131,94 @@ body {
 	75% {
 		margin-top: 252px;
 		box-shadow: 0px 12px 8px -6px #444;
-
 	}
 	100% {
 		margin-top: 250px;
 		box-shadow: 0px 15px 8px -6px #444;
-
 	}
 }
 
-.poof {
-	opacity: 0;
-/*	display: none;*/
-	-webkit-transition: all 2s;
-	transition: all 2s;
-}
-
-/*
-
-#startScreen:hover {
-		opacity: 0;
-		transition: opacity 2s;
-}
-*/
-
 a {
-		text-decoration: none;
+	text-decoration: none;
 }
 
 a:visited {
-		color: inherit;
+	color: inherit;
 }
 
 header {
-/*    color: rgba(13, 211, 13, 0.85);*/
-		color: orange;
-    font-size: 3em;
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: space-around;
-		align-items: center;
-		width: 90%;
-		background-color: black;
-		margin: .1em 0;
+	color: orange;
+	font-size: 3em;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+	align-items: center;
+	width: 90%;
+	background-color: black;
+	margin: .1em 0;
 
-		-webkit-clip-path: polygon(0% 7%, 4% 1%, 7% 8%, 12% 1%, 16% 10%, 21% 0%, 24% 9%, 29% 1%, 36% 11%, 41% 1%, 46% 10%, 52% 0%, 56% 10%, 60% 0%, 65% 11%, 72% 2%, 76% 9%, 81% 1%, 86% 9%, 91% 0%, 93% 6%, 98% 1%, 100% 11%, 100% 89%, 96% 99%, 91% 93%, 87% 99%, 81% 93%, 78% 100%, 72% 95%, 68% 100%, 64% 95%, 60% 100%, 55% 93%, 51% 100%, 48% 96%, 44% 100%, 40% 93%, 37% 100%, 34% 93%, 28% 100%, 23% 93%, 19% 100%, 16% 93%, 11% 100%, 8% 91%, 5% 100%, 0% 93%);
+	-webkit-clip-path: polygon(0% 7%, 4% 1%, 7% 8%, 12% 1%, 16% 10%, 21% 0%, 24% 9%, 29% 1%, 36% 11%, 41% 1%, 46% 10%, 52% 0%, 56% 10%, 60% 0%, 65% 11%, 72% 2%, 76% 9%, 81% 1%, 86% 9%, 91% 0%, 93% 6%, 98% 1%, 100% 11%, 100% 89%, 96% 99%, 91% 93%, 87% 99%, 81% 93%, 78% 100%, 72% 95%, 68% 100%, 64% 95%, 60% 100%, 55% 93%, 51% 100%, 48% 96%, 44% 100%, 40% 93%, 37% 100%, 34% 93%, 28% 100%, 23% 93%, 19% 100%, 16% 93%, 11% 100%, 8% 91%, 5% 100%, 0% 93%);
 }
 
 header h2 {
-		margin: 20px;
+	margin: 20px;
 }
+
 header h2:hover {
 	color: black;
 	text-shadow: 1px 0 white, -1px 0 white, 0 0 2px white;
 }
 
 #developer-details {
-		font-family: 'Comfortaa';
-		font-weight: 300;
-		font-size: 0.4em;
-		color: white;
+	font-family: 'Comfortaa';
+	font-weight: 300;
+	font-size: 0.4em;
+	color: white;
 }
 
 #container {
-		margin: .2em 0;
-		display: flex;
-		flex-flow: row wrap;
-		align-content: center;
-		align-items: center;
-		justify-content: space-around;
-
-		width: 90%;
-		top: 20px;
+	margin: .2em 0;
+	display: flex;
+	flex-flow: row wrap;
+	align-content: center;
+	align-items: center;
+	justify-content: space-around;
+	width: 90%;
+	top: 20px;
 }
 
 #sidebar {
-		min-height: 400px;
-		width: 15%;
-		margin: 10px 0;
-		padding: 1em;
-
-		border: .3em solid orange;
-		border-radius: 1em;
-		color: #fff;
-
-		display: flex;
-		flex-flow: column;
-		align-items: center;
-		justify-content: space-around;
-		align-content: space-around;
+	min-height: 400px;
+	width: 15%;
+	margin: 10px 0;
+	padding: 1em;
+	border: .3em solid orange;
+	border-radius: 1em;
+	color: #fff;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: space-around;
+	align-content: space-around;
 }
 
 #sidebar > p {
-		font-size: 1.5em;
+	font-size: 1.5em;
 }
 
 .info-text {
-		font-family: 'Comfortaa';
-		font-weight: 300;
-		font-size: .9em;
+	font-family: 'Comfortaa';
+	font-weight: 300;
+	font-size: .9em;
 }
 
 .sidebar-bug {
-		height: 80px;
-		width: auto;
-		background-image: url(../images/enemy-bug.png);
-		background-size: 50%;
-		background-position: 50% 80%;
-		background-repeat: no-repeat;
+	height: 80px;
+	width: auto;
+	background-image: url(../images/enemy-bug.png);
+	background-size: 50%;
+	background-position: 50% 80%;
+	background-repeat: no-repeat;
 }
 
 .sidebar-goal {
@@ -276,90 +230,82 @@ header h2:hover {
 	background-size: 60%;
 	background-position: 50% 80%;
 	background-repeat: no-repeat;
-
 }
 
 canvas {
-    background: black;
-    border: 1px solid black;
-    border-radius: 1em;
+	background: black;
+	border: 1px solid black;
+	border-radius: 1em;
 
-/*		-webkit-clip-path: polygon(0% 4%, 6% 1%, 11% 7%, 18% 1%, 24% 5%, 33% 0%, 39% 5%, 49% 1%, 60% 4%, 71% 1%, 78% 4%, 90% 1%, 95% 3%, 100% 2%, 100% 96%, 95% 100%, 87% 97%, 76% 100%, 67% 99%, 59% 100%, 52% 97%, 39% 100%, 28% 97%, 18% 100%, 9% 97%, 2% 100%, 0% 95%);*/
-
-		-webkit-clip-path: polygon(0% 7%, 4% 1%, 7% 8%, 12% 1%, 16% 10%, 21% 0%, 24% 9%, 29% 1%, 36% 11%, 41% 1%, 46% 10%, 52% 0%, 56% 10%, 60% 0%, 65% 11%, 72% 2%, 76% 9%, 81% 1%, 86% 9%, 91% 0%, 93% 6%, 98% 1%, 100% 11%, 100% 89%, 96% 99%, 91% 93%, 87% 99%, 81% 93%, 78% 100%, 72% 95%, 68% 100%, 64% 95%, 60% 100%, 55% 93%, 51% 100%, 48% 96%, 44% 100%, 40% 93%, 37% 100%, 34% 93%, 28% 100%, 23% 93%, 19% 100%, 16% 93%, 11% 100%, 8% 91%, 5% 100%, 0% 93%);
+	-webkit-clip-path: polygon(0% 4%, 6% 1%, 11% 7%, 18% 1%, 24% 5%, 33% 0%, 39% 5%, 49% 1%, 60% 4%, 71% 1%, 78% 4%, 90% 1%, 95% 3%, 100% 2%, 100% 96%, 95% 100%, 87% 97%, 76% 100%, 67% 99%, 59% 100%, 52% 97%, 39% 100%, 28% 97%, 18% 100%, 9% 97%, 2% 100%, 0% 95%);
 }
 
 h3 {
-    position: absolute;
-    width: 80%;
-    height: 70px;
-    border: .3em solid orange;
-    box-sizing: border-box;
-    border-radius: 1em;
-    text-align: center;
-    padding: 10px;
-    font-size: 1.5em;
-    top: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255,255,255,0.6);
+	position: absolute;
+	width: 80%;
+	height: 70px;
+	border: .3em solid orange;
+	box-sizing: border-box;
+	border-radius: 1em;
+	text-align: center;
+	padding: 10px;
+	font-size: 1.5em;
+	top: 5%;
+	left: 50%;
+	transform: translateX(-50%);
+	background: rgba(255,255,255,0.6);
 }
 
 #mainscreen {
-    position: relative;
+  position: relative;
 }
 
 #prompt {
-		display: none;
-    position: absolute;
-
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-
-    width: 300px;
-    height: 100px;
-    border: .4em solid orange;
-    border-radius: 1em;
-    color: #fff;
-
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+	display: none;
+	position: absolute;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	width: 300px;
+	height: 100px;
+	border: .4em solid orange;
+	border-radius: 1em;
+	color: #fff;
+	top: 60%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 #prompt p {
-		margin: .5em;
-		font-size: 1.5em;
-		text-shadow: 2px 1px 2px #999;
+	margin: .5em;
+	font-size: 1.5em;
+	text-shadow: 2px 1px 2px #999;
 }
 
 #restart {
-		padding: .5em;
-		font-family: 'Ewert';
-		font-size: 1em;
-		color: gray;
-		border: .2em solid silver;
-		border-radius: 1em;
-		background-color: transparent;
-		box-shadow: 0px 8px 3px -3px #444;
+	padding: .5em;
+	font-family: 'Ewert';
+	font-size: 1em;
+	color: gray;
+	border: .2em solid silver;
+	border-radius: 1em;
+	background-color: transparent;
+	box-shadow: 0px 8px 3px -3px #444;
 
-		transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
 }
 
 #restart:hover {
-		color: white;
-		text-shadow: 0 2px 4px yellow;
+	color: white;
+	text-shadow: 0 2px 4px yellow;
 }
 
 #restart:active {
-		box-shadow: inset 0px 2px 3px -3px #444;
-		margin-top: .2em;
-/*		transition: all 1s;*/
-
+	box-shadow: inset 0px 2px 3px -3px #444;
+	margin-top: .2em;
 }
 
-
+/* Icon fonts from icomoon.io */
 @font-face {
 	font-family: 'icomoon';
 	src:url('../fonts/icomoon.eot?cahfeu');
@@ -385,87 +331,41 @@ h3 {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-
 .icon-spinner:before {
-	content: "\e983";
+	content: '\e983';
 }
 
 .icon-bug:before {
-	content: "\e999";
+	content: '\e999';
 }
 
 .icon-wink:before {
-	content: "\e9e8";
+	content: '\e9e8';
 }
 
 .icon-volume-on:before {
-	content: "\ea26";
+	content: '\ea26';
 }
 
 .icon-volume-off:before {
-	content: "\ea2a";
+	content: '\ea2a';
 }
 
 .icon-steam:before {
-	content: "\eaae";
+	content: '\eaae';
 }
 
 .icon-github1:before {
-	content: "\eab2";
+	content: '\eab2';
 }
 
 .icon-github2:before {
-	content: "\eab3";
+	content: '\eab3';
 }
 
 .icon-github3:before {
-	content: "\eab5";
+	content: '\eab5';
 }
-
-/*
-.icon-handlogo:before {
-	content: '\e617';
-}
-.icon-location:before {
-	content: '\e600';
-}
-.icon-screen:before {
-	content: '\e609';
-}
-.icon-mobile:before {
-	content: '\e60a';
-}
-.icon-tablet:before {
-	content: '\e601';
-}
-.icon-mail:before {
-	content: '\e611';
-}
-.icon-github:before {
-	content: '\e603';
-}
-.icon-linkedin:before {
-	content: '\e604';
-}
-.icon-mobile2:before {
-	content: '\e605';
-}
-.icon-location2:before {
-	content: '\e607';
-}
-.icon-github2:before {
-	content: '\e608';
-}
-.icon-github3:before {
-	content: '\e60b';
-}
-.icon-linkedin2:before {
-	content: '\e614';
-}
-.icon-linkedin3:before {
-	content: '\e616';
-}
-*/
 
 /* Media queries */
 @media only screen and (max-width: 960px) {
