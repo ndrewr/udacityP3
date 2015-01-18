@@ -88,7 +88,7 @@ body {
 		radial-gradient(circle at 0    50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent);
 	background-size:100px 50px;
 
-	transition: all 2s;
+	transition: all 5s;
 
 
 }
