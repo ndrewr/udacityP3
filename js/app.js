@@ -11,7 +11,7 @@ var Enemy = function (x, y, speed) {
 	if (speed)
 		this.speed = speed;
 	else
-		this.speed = app.randomize(2, 3);
+		this.speed = app.randomize(2, 2.5); // increase range to increase difficulty
 }
 
 Enemy.prototype = {
@@ -32,7 +32,7 @@ Enemy.prototype = {
 // Player class
 var Player = function () {
 	this.sprite = 'images/unit1.png';
-	// this call sets starting pos of player
+	// sets starting pos of player
 	this.x = 0;
 	this.y = 0;
 	this.counter = 0; // counter for sprite animation frame
@@ -43,7 +43,6 @@ var Player = function () {
 // Simply returns player to specified starting pt, default level startPt otherwise
 Player.prototype = {
 	constructor: Player,
-
 	reset: function (newX, newY) {
 		if (newX && newY) {
 			if (!isNaN(newX) || !isNaN(newY)) {
@@ -123,7 +122,7 @@ var Level = function (num, size, levelTiles, start, exit) {
 var app = (function () {
 	var allEnemies = [],
 		levels = [],
-		currentLevel = 4,
+		currentLevel = 0,
 		levelComplete = false,
 		player = new Player(); //Player object references levels objects so must be instantiated last
 

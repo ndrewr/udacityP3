@@ -36,9 +36,8 @@ ol, ul {
 /***************************** end reset ******************************/
 
 .textureGray {
-	background-color: #616773;
-	background-image: url(http://www.transparenttextures.com/patterns/diagmonds-light.png);
-	/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+	background-color: #85909e;
+	background-image: url(/images/dimension-texture.png);
 }
 
 body {
@@ -47,7 +46,6 @@ body {
 	flex-flow: column;
 	align-items: center;
 	font-family: 'Nova Oval', cursive;
-
 	background-color:silver;
 	background-image:
 	radial-gradient(circle at 100% 150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
@@ -64,7 +62,6 @@ body {
 	width: 100%;
 	left: 0;
 	text-align: center;
-
 	background-image:
 		radial-gradient(circle at 100% 150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
 		radial-gradient(circle at 0    150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
@@ -72,7 +69,6 @@ body {
 		radial-gradient(circle at 100% 50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent),
 		radial-gradient(circle at 0    50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent);
 	background-size:100px 50px;
-
 	transition: all 5s; /* for start screen fade effect */
 }
 
@@ -278,10 +274,6 @@ h3 {
 	font-size: 1.5em;
 	color: gray;
 	box-shadow: 0px 8px 0px -1px #777, 0px 24px 12px -8px #444;
-/*
-	-webkit-animation: floaty2 2.5s linear 3s infinite;
-	animation: floaty2 2.5s linear 3s infinite;
-*/
 	-webkit-transition: all 3s;
 	transition: all 3s;
 }

@@ -7,7 +7,6 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
-
 var Engine = (function(global) {
 	var doc = global.document,
 			win = global.window,
@@ -314,7 +313,7 @@ var Engine = (function(global) {
 			'images/unit3.png',
 	]);
 
-	// if I change the kickoff init() call here to a button press i can control game start
+	// changed the kickoff init() call from here to a button press so i can control game start
 	//Resources.onReady(init);
 
 	/* Assign the canvas' context object to the global variable (the window

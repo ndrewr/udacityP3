@@ -2,27 +2,41 @@ frontend-nanodegree-arcade-game
 ===============================
 
 Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
-
 for self-checking their submission.
 
-TODO::Current features to implement:
-- new graphics set
-- expanded play field
-- 2 enemy types
-- stage win condition (ex open a gate)
+This version of frogger uses a custom level object to allow greater flexibility in layout and objectives. Current version allows a starting and ending pt to be specified upon creation of level (see app.js->test levels section). Further, game app code was encapsulated with a public API return for better programming SOP.
 
-Level Ideas:
+Game controls with arrow keys, objective is to reach the "goal" (the ancestor skeleton in this case) for a set number of levels. A future version can easily employ a random level generator.
 
-- Level 1 - basic frogger, enemies come in from left move to right, different speeds and staggers
+Sound effects and CSS added mixed in for pop.
 
-- Level 2 - frogger, but with enemies from both left and right
+This project thanks the following resources for assets and inspiration:
+- StackOverflow : http://stackoverflow.com
 
-- Level 3 - Collect keys scattered around map to unlock gate and advance
+- Lost Decade Games : http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/
 
-- Level 4 - Player must collect weapon from starting side, make way to strike 'boss', then go back and collect another weapon and repeat until dead
+- Josh on Design : http://joshondesign.com/p/books/canvasdeepdive/toc.html
 
-- implement 'Level Object' that contains level tile maps and different rule flags. A selector for level rules can be set in a seperate function that decides victory conditions....this is separate from 'collision' function which determines if player gets killed
+- CSS3 Patterns Gallery : http://lea.verou.me/css3patterns/
 
-- for level objects like keys or swords, implement 'accessory' object that takes a image object and that level objects can lay out accordingly. Collision function may need to be altered to check if player moves to accessory square...if yes, player "collects" accessory. NOTE: boss can actually also be considered accessory if he is just stationary waiting to be killed
+- CSS-Tricks : http://css-tricks.com
 
-- A Timer that carries over level-to-level and logs hi-scores?
+- Icomoon icon fonts : http://icomoon.io
+
+- Transparent Textures : http://www.transparenttextures.com/
+
+- Clippy : http://bennettfeely.com/clippy/
+
+- Jenkov Tutorials : http://tutorials.jenkov.com
+
+- Playing Audio in Javascript : http://gamedev.stackexchange.com/questions/60139/play-audio-in-javascript-with-a-good-performance
+
+- Soundbible : http://soundbible.com/
+		- Neck snap sound - Vladimir : http://soundbible.com/1953-Neck-Snap.html
+		- Metal Gong 1 - dianakc : http://soundbible.com/2062-Metal-Gong-1.html
+		- Computer Startup : http://soundbible.com/1589-Computer-Start-Up.html
+		- Dun Dun Dun - delsym : http://soundbible.com/1623-Dun-Dun-Dun.html
+		- Wind - Stilgar : http://soundbible.com/1247-Wind.html
+
+- Additional art assets: http://mcfunkypants.com/tower/
+
