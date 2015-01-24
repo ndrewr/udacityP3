@@ -1,0 +1,443 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+v2.0 | 20110126
+License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+/***************************** end reset ******************************/
+
+.textureGray {
+	background-color: #85909e;
+	background-image: url(/images/dimension-texture.png);
+}
+
+body {
+	text-align: center;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	font-family: 'Nova Oval', cursive;
+	background-color:silver;
+	background-image:
+	radial-gradient(circle at 100% 150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
+	radial-gradient(circle at 0    150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
+	radial-gradient(circle at 50%  100%, white 10%, silver 11%, silver 23%, white 24%, white 30%, silver 31%, silver 43%, white 44%, white 50%, silver 51%, silver 63%, white 64%, white 71%, transparent 71%, transparent),
+	radial-gradient(circle at 100% 50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent),
+	radial-gradient(circle at 0    50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent);
+	background-size:100px 50px;
+}
+
+#startScreen {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	text-align: center;
+	background-image:
+		radial-gradient(circle at 100% 150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
+		radial-gradient(circle at 0    150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
+		radial-gradient(circle at 50%  100%, white 10%, silver 11%, silver 23%, white 24%, white 30%, silver 31%, silver 43%, white 44%, white 50%, silver 51%, silver 63%, white 64%, white 71%, transparent 71%, transparent),
+		radial-gradient(circle at 100% 50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent),
+		radial-gradient(circle at 0    50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent);
+	background-size:100px 50px;
+	transition: all 5s; /* for start screen fade effect */
+}
+
+#startScreen button {
+	display: inline-block;
+	margin: 0 auto;
+	margin-top: 250px;
+	width: 200px;
+	height: 100px;
+	border: 5px solid orange;
+	background-color: gray;
+	border-radius: .5em;
+	font-family: Ewert, Sans;
+	font-size: 2.6em;
+	color: gray;
+	box-shadow: 0px 8px 0px -1px #777, 0px 24px 12px -8px #444;
+	-webkit-animation: floaty 2.5s linear infinite;
+	animation: floaty 2.5s linear infinite;
+}
+
+#startScreen button:hover {
+	color: white;
+	text-shadow: 0 2px 6px yellow;
+	-webkit-animation-play-state: paused;
+	animation-play-state: paused;
+}
+
+@-webkit-keyframes floaty {
+	25% {
+		margin-top: 252px;
+		box-shadow: 0px 8px 0px -1px #777, 0px 20px 12px -8px #444;
+	}
+	50% {
+		margin-top: 255px;
+		box-shadow: 0px 8px 0px -1px #777, 0px 16px 12px -8px #444;
+	}
+	75% {
+		margin-top: 252px;
+		box-shadow: 0px 8px 0px -1px #777, 0px 20px 12px -8px #444;
+	}
+	100% {
+		margin-top: 250px;
+		box-shadow: 0px 8px 0px -1px #777, 0px 24px 12px -8px #444;
+	}
+}
+
+@keyframes floaty {
+	25% {
+		margin-top: 252px;
+		box-shadow: 0px 12px 8px -6px #444;
+	}
+	50% {
+		margin-top: 255px;
+		box-shadow: 0px 8px 8px -6px #444;
+	}
+	75% {
+		margin-top: 252px;
+		box-shadow: 0px 12px 8px -6px #444;
+	}
+	100% {
+		margin-top: 250px;
+		box-shadow: 0px 15px 8px -6px #444;
+	}
+}
+
+a {
+	text-decoration: none;
+}
+
+a:visited {
+	color: inherit;
+}
+
+header {
+	color: orange;
+	font-size: 3em;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+	align-items: center;
+	width: 90%;
+	background-color: black;
+	margin: .1em 0;
+
+	-webkit-clip-path: polygon(0% 7%, 4% 1%, 7% 8%, 12% 1%, 16% 10%, 21% 0%, 24% 9%, 29% 1%, 36% 11%, 41% 1%, 46% 10%, 52% 0%, 56% 10%, 60% 0%, 65% 11%, 72% 2%, 76% 9%, 81% 1%, 86% 9%, 91% 0%, 93% 6%, 98% 1%, 100% 11%, 100% 89%, 96% 99%, 91% 93%, 87% 99%, 81% 93%, 78% 100%, 72% 95%, 68% 100%, 64% 95%, 60% 100%, 55% 93%, 51% 100%, 48% 96%, 44% 100%, 40% 93%, 37% 100%, 34% 93%, 28% 100%, 23% 93%, 19% 100%, 16% 93%, 11% 100%, 8% 91%, 5% 100%, 0% 93%);
+}
+
+header h2 {
+	margin: 20px;
+}
+
+header h2:hover {
+	color: black;
+	text-shadow: 1px 0 white, -1px 0 white, 0 0 2px white;
+}
+
+#developer-details {
+	font-family: 'Comfortaa';
+	font-weight: 300;
+	font-size: 0.4em;
+	color: white;
+}
+
+#container {
+	margin: .2em 0;
+	display: flex;
+	flex-flow: row wrap;
+	align-content: center;
+	align-items: center;
+	justify-content: space-around;
+	width: 90%;
+	top: 20px;
+}
+
+#sidebar {
+	min-height: 400px;
+	width: 15%;
+	margin: 10px 0;
+	padding: 1em;
+	border: .3em solid orange;
+	border-radius: 1em;
+	color: #fff;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: space-around;
+	align-content: space-around;
+	box-shadow: 0px 8px 0px -1px #777, 0px 24px 12px -8px #444;
+}
+
+#sidebar > p {
+	font-size: 1.5em;
+	text-shadow: 1px 1px 1px black;
+}
+
+.info-text {
+	font-family: 'Comfortaa';
+	font-weight: 300;
+	font-size: .9em;
+	text-shadow: 1px 1px 1px black;
+}
+
+.sidebar-bug {
+	height: 80px;
+	width: auto;
+	background-image: url(../images/enemy-bug.png);
+	background-size: 50%;
+	background-position: 50% 80%;
+	background-repeat: no-repeat;
+}
+
+.sidebar-goal {
+	height: 80px;
+	width: 70px;
+	display: inline-block;
+	margin 0 auto;
+	background-image: url(../images/skull2.png);
+	background-size: 60%;
+	background-position: 50% 80%;
+	background-repeat: no-repeat;
+}
+
+canvas {
+	background: black;
+	border: 1px solid black;
+	border-radius: 1em;
+
+	-webkit-clip-path: polygon(0% 4%, 6% 1%, 11% 7%, 18% 1%, 24% 5%, 33% 0%, 39% 5%, 49% 1%, 60% 4%, 71% 1%, 78% 4%, 90% 1%, 95% 3%, 100% 2%, 100% 96%, 95% 100%, 87% 97%, 76% 100%, 67% 99%, 59% 100%, 52% 97%, 39% 100%, 28% 97%, 18% 100%, 9% 97%, 2% 100%, 0% 95%);
+}
+
+h3 {
+	position: absolute;
+	width: 80%;
+	height: 70px;
+	border: .3em solid orange;
+	box-sizing: border-box;
+	border-radius: 1em;
+	text-align: center;
+	padding: 10px;
+	font-size: 1.5em;
+	top: 5%;
+	left: 50%;
+	transform: translateX(-50%);
+	background: rgba(255,255,255,0.6);
+}
+
+#mainscreen {
+  position: relative;
+}
+
+#rebegin {
+	display: none;
+	position: absolute;
+	top: -350px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 200px;
+	height: 100px;
+	border: 5px solid orange;
+	background-color: gray;
+	border-radius: .5em;
+	font-family: Ewert, Sans;
+	font-size: 1.5em;
+	color: gray;
+	box-shadow: 0px 8px 0px -1px #777, 0px 24px 12px -8px #444;
+	-webkit-transition: all 3s;
+	transition: all 3s;
+}
+
+#rebegin:hover {
+	color: white;
+	font-size: 2em;
+	text-shadow: 0 2px 6px yellow;
+	-webkit-animation-play-state: paused;
+	animation-play-state: paused;
+}
+
+@-webkit-keyframes floaty2 {
+	25% {
+		top: 352px;
+		box-shadow: 0px 8px 0px -1px #777, 0px 20px 12px -8px #444;
+	}
+	50% {
+		top: 355px;
+		box-shadow: 0px 8px 0px -1px #777, 0px 16px 12px -8px #444;
+	}
+	75% {
+		top: 352px;
+		box-shadow: 0px 8px 0px -1px #777, 0px 20px 12px -8px #444;
+	}
+	100% {
+		top: 350px;
+		box-shadow: 0px 8px 0px -1px #777, 0px 24px 12px -8px #444;
+	}
+}
+
+@keyframes floaty2 {
+	25% {
+		margin-top: 252px;
+		box-shadow: 0px 12px 8px -6px #444;
+	}
+	50% {
+		margin-top: 255px;
+		box-shadow: 0px 8px 8px -6px #444;
+	}
+	75% {
+		margin-top: 252px;
+		box-shadow: 0px 12px 8px -6px #444;
+	}
+	100% {
+		margin-top: 250px;
+		box-shadow: 0px 15px 8px -6px #444;
+	}
+}
+
+#prompt {
+	display: none;
+	position: absolute;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	width: 300px;
+	height: 100px;
+	border: .4em solid orange;
+	border-radius: 1em;
+	color: #fff;
+	top: 60%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	box-shadow: 0px 7px 0px -1px #777, 0px 34px 62px -12px #444;
+}
+
+#prompt p {
+	margin: .5em;
+	font-size: 1.5em;
+	text-shadow: 2px 1px 2px #999;
+}
+
+#restart {
+	padding: .5em;
+	font-family: 'Ewert';
+	font-size: 1em;
+	color: gray;
+	border: .2em solid silver;
+	border-radius: 1em;
+	background-color: transparent;
+	box-shadow: 0px 8px 3px -3px #444;
+
+	transition: all .5s ease-in-out;
+}
+
+#restart:hover {
+	color: white;
+	text-shadow: 0 2px 4px yellow;
+}
+
+#restart:active {
+	box-shadow: inset 0px 2px 3px -3px #444;
+	margin-top: .2em;
+}
+
+/* Icon fonts from icomoon.io */
+@font-face {
+	font-family: 'icomoon';
+	src:url('../fonts/icomoon.eot?cahfeu');
+	src:url('../fonts/icomoon.eot?#iefixcahfeu') format('embedded-opentype'),
+		url('../fonts/icomoon.woff?cahfeu') format('woff'),
+		url('../fonts/icomoon.ttf?cahfeu') format('truetype'),
+		url('../fonts/icomoon.svg?cahfeu#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^='icon-'], [class*=' icon-'] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-spinner:before {
+	content: '\e983';
+}
+
+.icon-bug:before {
+	content: '\e999';
+}
+
+.icon-wink:before {
+	content: '\e9e8';
+}
+
+.icon-volume-on:before {
+	content: '\ea26';
+}
+
+.icon-volume-off:before {
+	content: '\ea2a';
+}
+
+.icon-steam:before {
+	content: '\eaae';
+}
+
+.icon-github1:before {
+	content: '\eab2';
+}
+
+.icon-github2:before {
+	content: '\eab3';
+}
+
+.icon-github3:before {
+	content: '\eab5';
+}
+
+/* Media queries */
+@media only screen and (max-width: 960px) {
+	#sidebar {
+		width: 80%;
+		flex-flow: row;
+		min-height: 100px;
+	}
+}
+
