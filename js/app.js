@@ -1,4 +1,5 @@
 /* Constructor declarations */
+// Enemies our player must avoid
 var Enemy = function (x, y, speed) {
 	// The image/sprite for our enemies, this uses
 	// a helper we've provided to easily load images
@@ -55,6 +56,7 @@ Player.prototype = {
 		this.xOff = 0; // offset into spritesheet
 		this.yOff = 0;
 	},
+
 	update: function () {
 		// Increment sprite animation frame counter
 		this.counter++;
@@ -223,8 +225,7 @@ var app = (function () {
 }());
 
 
-/* Event listeners
-	*/
+/* Event listeners */
 // add hover 'swap' effects to anchor tags
 var anchors = document.getElementsByTagName('A');
 for (var i = 0; i < anchors.length; i++) {
@@ -236,8 +237,7 @@ for (var i = 0; i < anchors.length; i++) {
 	});
 }
 
-/* Test levels data...can be seperate file
-	*/
+/* Test levels data...can be seperate file */
 var testlevels = [];
 testlevels.push(new Level(0, {
 	rows: 6,

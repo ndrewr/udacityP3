@@ -95,7 +95,7 @@ var Engine = (function(global) {
 	/* This function sets everything in motion upon start button click
 	 */
 	function kickoff() {
-		new Audio('../sounds/startup1.ogg').play(); // play game start sound effect
+		new Audio('sounds/startup1.ogg').play(); // play game start sound effect
 		document.getElementById('startScreen').style.opacity = '0';
 		setTimeout(
 			function() {
@@ -109,14 +109,14 @@ var Engine = (function(global) {
 	 */
 	function restart() {
 		// delay just a sec to allow sound effect and css animation
-		new Audio('../sounds/dun3.mp3').play();
+		new Audio('sounds/dun3.mp3').play();
 		setTimeout(init, 1000);
 	}
 
 	/* Start the game over from the beginning
 	 */
 	function rebegin() {
-		new Audio('../sounds/startup1.ogg').play(); // play game start sound effect
+		new Audio('sounds/startup1.ogg').play(); // play game start sound effect
 		setTimeout(
 			function() {
 				app.setCurrentLevel();
@@ -156,7 +156,7 @@ var Engine = (function(global) {
 				if ((enemyNose >= app.getPlayer().x && enemy.x <= app.getPlayer().x + 32) &&
 						(enemy.y === app.getPlayer().y - 25)) {
 					 // Play sound; call Game Over state
-					new Audio('../sounds/chomp.mp3').play();
+					new Audio('sounds/chomp.mp3').play();
 					gameOver();
 				}
 			});
@@ -173,7 +173,7 @@ var Engine = (function(global) {
 	/* Play sounds and present player with victory message
 	 */
 	function gameWin() {
-		new Audio('../sounds/gong.ogg').play();
+		new Audio('sounds/gong.ogg').play();
 		doc.getElementById('player').pause();
 		var btn = doc.getElementById('rebegin').style.display = 'inherit';
 		setTimeout(function() {
