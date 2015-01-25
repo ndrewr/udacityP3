@@ -37,7 +37,7 @@ ol, ul {
 
 .textureGray {
 	background-color: #85909e;
-	background-image: url(/images/dimension-texture.png);
+	background-image: url(../images/dimension-texture.png);
 }
 
 body {
