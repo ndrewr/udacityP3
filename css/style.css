@@ -45,7 +45,7 @@ body {
 	display: flex;
 	flex-flow: column;
 	align-items: center;
-	font-family: 'Nova Oval', cursive;
+	font-family: 'Nova Oval', sans-serif;
 	background-color:silver;
 	background-image:
 	radial-gradient(circle at 100% 150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
@@ -157,6 +157,7 @@ header {
 }
 
 header h2 {
+	font-family: 'Nova Oval', cursive;
 	margin: 20px;
 }
 
@@ -373,11 +374,8 @@ h3 {
 /* Icon fonts from icomoon.io */
 @font-face {
 	font-family: 'icomoon';
-	src:url('../fonts/icomoon.eot?cahfeu');
-	src:url('../fonts/icomoon.eot?#iefixcahfeu') format('embedded-opentype'),
-		url('../fonts/icomoon.woff?cahfeu') format('woff'),
-		url('../fonts/icomoon.ttf?cahfeu') format('truetype'),
-		url('../fonts/icomoon.svg?cahfeu#icomoon') format('svg');
+		src:url('../fonts/icomoon.woff?cahfeu') format('woff'),
+		url('../fonts/icomoon.ttf?cahfeu') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
