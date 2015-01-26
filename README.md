@@ -9,6 +9,7 @@ This version of frogger uses a custom level object to allow greater flexibility 
 Game controls with arrow keys, objective is to reach the "goal" (the ancestor skeleton in this case) for a set number of levels. A future version can easily employ a random level generator.
 
 Live version, hopefully working, is here: http://uncleoptimus.github.io/udacityP3
+
 Sound effects and CSS added in for pop.
 
 This project owes thanks to the following resources for assets and inspiration:

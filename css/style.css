@@ -274,13 +274,13 @@ h3 {
 	font-size: 1.5em;
 	color: gray;
 	box-shadow: 0px 8px 0px -1px #777, 0px 24px 12px -8px #444;
-	-webkit-transition: all 3s;
-	transition: all 3s;
+	-webkit-transition: all 2.5s;
+	transition: all 2.5s;
 }
 
 #rebegin:hover {
 	color: white;
-	font-size: 2em;
+	font-size: 1.8em;
 	text-shadow: 0 2px 6px yellow;
 	-webkit-animation-play-state: paused;
 	animation-play-state: paused;
